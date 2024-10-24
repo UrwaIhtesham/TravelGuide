@@ -1,7 +1,6 @@
 import React, { useState, useEffect} from 'react';
 import { View, Text, Image, StyleSheet, Dimensions, SafeAreaView, ActivityIndicator } from 'react-native';
 import * as Font from 'expo-font';
-import Applogo from '../../assets/Logo/TravelGuidelogo.svg';
 import SvgComponent from '../../SVG/AppLogo';
 import { useNavigation } from '@react-navigation/native';
 
