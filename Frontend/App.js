@@ -7,6 +7,9 @@ import SignUp from './Pages/SignUp/SignUp';
 import AddEmergencyContact from './Pages/SignUp/AddEmergencyContact';
 import HomeScreen from './Pages/HomeScreen/HomeScreen';
 import Login from './Pages/LogIn/LogIn';
+import StartRide1 from './Pages/StartRide/StartRide1';
+import StartRide2 from './Pages/StartRide/StartRide2';
+import StartRide3 from './Pages/StartRide/StartRide3';
 
 const Stack = createStackNavigator();
 
@@ -37,6 +40,21 @@ const App = () => {
         <Stack.Screen
         name="Login"
         component={Login}
+        options={{ headerShown: false }}
+        />
+        <Stack.Screen
+        name="StartRide1"
+        component={StartRide1}
+        options={{ headerShown: false }}
+        />
+        <Stack.Screen
+        name="StartRide2"
+        component={StartRide2}
+        options={{ headerShown: false }}
+        />
+        <Stack.Screen
+        name="StartRide3"
+        component={StartRide3}
         options={{ headerShown: false }}
         />
       </Stack.Navigator>

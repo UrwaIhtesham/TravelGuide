@@ -15,9 +15,12 @@ import Shield from '../../SVG/HomePageIcons/Shield';
 import ForwardArrow from '../../SVG/HomePageIcons/ForwardArrow';
 import Home from '../../SVG/HomePageIcons/Home';
 
+import { useNavigation } from '@react-navigation/native';
+
 const HomeScreen = () => {
     const {width, height} = Dimensions.get('window');
     const [fontLoaded, setFontLoaded] = useState(false);
+    const navigation=useNavigation();
 
     useEffect(() => {
         const loadFont = async () => {
@@ -133,7 +136,7 @@ const HomeScreen = () => {
                         <Text style={styles.rideInProgressText}>Start Ride</Text>
                     </View>
                     <Text style={styles.rideDetails}>Start your race with enhanced safety features and real-time monitoring for a secure journey</Text>
-                    <TouchableOpacity style={styles.arrowContainer}>
+                    <TouchableOpacity style={styles.arrowContainer} onPress={() => navigation.navigate('StartRide1')}>
                         <ForwardArrow/>
                     </TouchableOpacity>
                 </View>
