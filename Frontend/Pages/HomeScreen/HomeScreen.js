@@ -1,6 +1,9 @@
 import React, {useEffect, useState } from 'react';
 import {View, Text, StyleSheet, Dimensions, ScrollView,TouchableOpacity, ActivityIndicator } from 'react-native';
 import * as Font from 'expo-font';
+
+import BottomNavBar from './BottomBar';
+
 import PencilIcon from '../../SVG/HomePageIcons/PencilIcon';
 import Person from '../../SVG/HomePageIcons/Person';
 import Car from '../../SVG/HomePageIcons/Car';
@@ -126,26 +129,7 @@ const HomeScreen = () => {
                 </View>
             </ScrollView>
 
-            <View style={styles.navContainer}>
-            <View style={styles.bottomNav}>
-                <TouchableOpacity style={styles.navItem}>
-                    <Home/>
-                    <Text style={styles.navText}>Home</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.navItem}>
-                    <Home/>
-                    <Text style={styles.navText}>Home</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.navItem}>
-                    <Home/>
-                    <Text style={styles.navText}>Home</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.navItem}>
-                    <Home/>
-                    <Text style={styles.navText}>Home</Text>
-                </TouchableOpacity>
-            </View>
-            </View>
+            <BottomNavBar />
         </View>
     );
 };
