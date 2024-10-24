@@ -1,62 +1,36 @@
 import React from "react";
-import { View, Text, StyleSheet, Dimensions, SafeAreaView, ActivityIndicator, ScrollView, Touchable, TouchableOpacity, TextInput } from "react-native";
-import SignUpSVG from "../../SVG/SignUp";
+import { View, TextInput, TouchableOpacity, Image, StyleSheet, Text, Dimensions, ScrollView } from "react-native";
 import * as Font from 'expo-font';
-import { useEffect, useState } from "react";
+import LogInIcon from "../../SVG/LoginPageIcons/LoginIcon";
 import { useNavigation } from "@react-navigation/native";
 
-const SignUp = () => {
-    const {width,height} = Dimensions.get('window');
-    const [fontLoaded, setFontLoaded] = useState(false);
+const Login = () => {
     const navigation = useNavigation();
-
-    useEffect(() => {
-        const loadFont = async () => {
-            await Font.loadAsync({
-                'Poppins': require('../../assets/Fonts/Poppins-Bold.ttf'),
-            });
-            setFontLoaded(true);
-        };
-
-        loadFont();
-    }, []);
-
-    if (!fontLoaded){
-        return <ActivityIndicator size="large" color="#E3F2FD" />
-    }
-
     return (
         <ScrollView contentContainerStyle={styles.container}>
             <View style={styles.img}>
-                <SignUpSVG />
+                <LogInIcon />
             </View>
 
-            <Text style={styles.headerText}>Create an account</Text>
+            <Text style={styles.headerText}>Already have an account</Text>
 
+            <Text style={styles.heading}>Email</Text>
             <TextInput style={styles.input} placeholder="Enter Your Username" placeholderTextColor="#B0BEC5"/>
-            <TextInput style={styles.input} placeholder="Enter Your Email" placeholderTextColor="#B0BEC5"/>
-            <TextInput style={styles.input} placeholder="Enter Your Phone Number" placeholderTextColor="#B0BEC5"/>
-            <TextInput style={styles.input} placeholder="Enter Your CNIC" placeholderTextColor="#B0BEC5"/>
-            <TextInput style={styles.input} placeholder="Enter Gender" placeholderTextColor="#B0BEC5"/>
-            <TextInput style={styles.input} placeholder="Enter Date of Birth" placeholderTextColor="#B0BEC5"/>
+            <Text style={styles.heading}>Password</Text>
             <TextInput style={styles.input} placeholder="Enter Your Password" placeholderTextColor="#B0BEC5" secureTextEntry/>
 
-            <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('AddEmergencyContact')}>
-                <Text style={styles.buttonText}>Add Emergency Contacts</Text>
-            </TouchableOpacity>
-
             <TouchableOpacity style={styles.signupbutton} onPress={() => navigation.navigate('HomeScreen')}>
-                <Text style={styles.signupbuttonText}>Sign Up</Text>
+                <Text style={styles.signupbuttonText}>Login</Text>
             </TouchableOpacity>
 
             <Text style={styles.footerText}>
                 Already have an account?{' '}
-                <TouchableOpacity onPress={() => navigation.navigate('Login')}>
-                    <Text style={styles.loginText}>Log In</Text>
+                <TouchableOpacity onPress={() => navigation.navigate('Sign Up')}>
+                    <Text style={styles.loginText}>Sign Up</Text>
                 </TouchableOpacity>
             </Text>
         </ScrollView>
-    );
+    )
 };
 
 const styles = StyleSheet.create({
@@ -75,8 +49,13 @@ const styles = StyleSheet.create({
         color: '#E3F2FD',
         fontSize: 30,
         fontWeight: 'bold',
-        marginBottom: 20,
+        marginBottom: 100,
         textAlign: 'center',
+    },
+    heading: {
+        fontSize: 16,
+        color: '#B0BEC5',
+        marginBottom: 10,
     },
     input: {
         width: '100%',
@@ -120,4 +99,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default SignUp;
+export default Login;
