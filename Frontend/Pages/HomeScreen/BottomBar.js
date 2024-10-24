@@ -38,7 +38,9 @@ const BottomNavBar = () => {
 
             <View style={styles.semiCircle}/>
             <View style={styles.logoContainer}>
+                <TouchableOpacity>
                 <Image source={require('../../assets/Logo/AppLogo.png')} style={styles.logo}/>
+                </TouchableOpacity>
             </View>
         </View>
     )

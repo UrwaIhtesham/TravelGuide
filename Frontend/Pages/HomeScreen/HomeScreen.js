@@ -79,39 +79,50 @@ const HomeScreen = () => {
                     <View style={styles.featuresRow}>
                     <View style={styles.featureBoxContainer}>
                     <View style={styles.shadowover}/>
+                        <TouchableOpacity>
                         <View style={styles.featureBox}>
                             <View style={styles.shadow}>
                             <Alert/>
                             </View>
                             <Text style={styles.featureText}>Panic Mode</Text>
                         </View>
+                        </TouchableOpacity>
                         </View>
+
                         <View style={styles.featureBoxContainer}>
                         <View style={styles.shadowover}/>
+                        <TouchableOpacity>
                         <View style={styles.featureBox}>
                         <View style={styles.shadow}>
                             <Voice/>
                             </View>
                             <Text style={styles.featureText}>Voice Command Activation</Text>
                         </View>
+                        </TouchableOpacity>
                         </View>
+
                         <View style={styles.featureBoxContainer}>
                         <View style={styles.shadowover}/>
+                        <TouchableOpacity>
                         <View style={styles.featureBox}>
                         <View style={styles.shadow}>
                             <Battery/>
                             </View>
                             <Text style={styles.featureText}>Battery Monitoring</Text>
                         </View>
+                        </TouchableOpacity>
                         </View>
+
                         <View style={styles.featureBoxContainer}>
                         <View style={styles.shadowover}/>
+                        <TouchableOpacity>
                         <View style={styles.featureBox}>
                         <View style={styles.shadow}>
                             <Checkin/>
                             </View>
                             <Text style={styles.featureText}>Safety Check-ins</Text>
                         </View>
+                        </TouchableOpacity>
                         </View>
                     </View>
                 </View>
@@ -217,7 +228,6 @@ const styles = StyleSheet.create({
         backgroundColor: '#1C2333',
         padding: 20,
         borderRadius: 10,
-        alignItems: 'center',
         borderWidth: 1,
         borderColor: '#2B99F3',
         borderRadius: 25,
@@ -237,13 +247,17 @@ const styles = StyleSheet.create({
     },
     insightText: {
         color: '#FFFFFF',
-        marginTop: 10,
-        fontSize: 14,
+        marginTop: 2,
+        fontSize: 24,
+        fontWeight: 'bold',
+        textShadowColor: '#000000',
+        textShadowOffset: {width: 7, height: 5 },
+        textShadowRadius: 10,
     },
     insightValue: {
-        color: '#FFFFFF',
+        color: '#B0BEC5',
         marginTop: 5,
-        fontSize: 16,
+        fontSize: 15,
         fontWeight: 'bold',
     },
     featuresContainer: {
