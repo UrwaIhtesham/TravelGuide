@@ -10,6 +10,7 @@ import Login from './Pages/LogIn/LogIn';
 import StartRide1 from './Pages/StartRide/StartRide1';
 import StartRide2 from './Pages/StartRide/StartRide2';
 import StartRide3 from './Pages/StartRide/StartRide3';
+import UserProfile from './Pages/UserProfile/UserProfile';
 
 const Stack = createStackNavigator();
 
@@ -55,6 +56,11 @@ const App = () => {
         <Stack.Screen
         name="StartRide3"
         component={StartRide3}
+        options={{ headerShown: false }}
+        />
+        <Stack.Screen
+        name="UserProfile"
+        component={UserProfile}
         options={{ headerShown: false }}
         />
       </Stack.Navigator>

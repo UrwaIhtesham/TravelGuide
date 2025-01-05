@@ -2,10 +2,12 @@ import React, { useEffect,useState } from "react";
 import { View, Text, StyleSheet, ScrollView, ActivityIndicator, Dimensions, TextInput, TouchableOpacity } from "react-native";
 import * as Font from 'expo-font';
 import BackButton from "../../SVG/Backbutton";
+import { useNavigation } from "@react-navigation/native";
 
 const AddEmergencyContact = () => {
     const {width, height } = Dimensions.get('window');
     const [fontLoaded, setFontLoaded] = useState(false);
+    const navigation = useNavigation();
 
     useEffect(() => {
         const loadFont = async () => {
@@ -22,10 +24,16 @@ const AddEmergencyContact = () => {
         return <ActivityIndicator size="large" color="#E3F2FD" />
     }
 
+    const handlePress = () => {
+        navigation.navigate('SignUp');
+    }
+
     return (
         <View style={styles.container}>
             <View style={styles.header}>
-                <BackButton />
+                <TouchableOpacity onPress={handlePress}>
+                    <BackButton />
+                </TouchableOpacity>
                 <Text style={styles.headerText}>Emergency Contact</Text>
             </View>
             <View style={styles.inputContainer}>

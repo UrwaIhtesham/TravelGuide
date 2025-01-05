@@ -34,7 +34,7 @@ const HomeScreen = () => {
     }, []);
 
     if (!fontLoaded){
-        return <ActivityIndicator size="large" color="#E3F2FD" />
+        return <ActivityIndicator size="small" color="#E3F2FD" />
     }
 
     return (
@@ -47,7 +47,7 @@ const HomeScreen = () => {
                         <Text style={styles.date}>Fri, Oct 18, 2024</Text>
                     </View>
                     <View style={styles.iconContainer}>
-                        <TouchableOpacity style={styles.editProfileIcon}>
+                        <TouchableOpacity style={styles.editProfileIcon} onPress={() => navigation.navigate('UserProfile') }>
                             <PencilIcon />
                         </TouchableOpacity>
                     </View>
