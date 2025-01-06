@@ -72,8 +72,36 @@ const AboutScreen = () => {
                 <Text style={styles.bulletPoint}>  {"b) Location Information"}</Text>
                 <Text style={styles.innerBulletPoint}>  {"• Real-time location data when you use features such as panic mode."} </Text>
                 <Text style={styles.bulletPoint}>  {"c) Microphone and Camera Access"}</Text>
-                <Text style={styles.innerBulletPoint}>  {"• Audio and video recordings when you use panic mode features"} </Text>
-            </View>
+                <Text style={styles.innerBulletPoint}>  {"• Audio and video recordings when you use panic mode features."} </Text>
+                <Text style={styles.bulletPoint}>   {"d) Device Information"}</Text>
+                <Text style={styles.innerBulletPoint}>  {"• Information about your device that helps in locating you such as GPS, IP address etc.,"} </Text>
+                <Text style={styles.bulletPoint}>   2. How We Use Your Information</Text>
+                <Text style={styles.body}>   We may use your information we collect for the following purposes:</Text>
+                <Text style={styles.innerBulletPoint}>  {"• To provide and improve our services."} </Text>
+                <Text style={styles.innerBulletPoint}>  {"• We use emergency contact details only to send alerts while start ride feature is active or in panic mode."} </Text>
+                <Text style={styles.innerBulletPoint}>  {"• To communicate with you regarding app updates, technical support, or security notices."} </Text>
+                <Text style={styles.innerBulletPoint}>  {"• To comply with legal requirements and protect your safety."} </Text>
+                <Text style={styles.innerBulletPoint}>  {"• We only use your location when panic mode is activated. We will not use it for illegal purposes."} </Text>
+                <Text style={styles.innerBulletPoint}>  {"• We only use your microphone to listen to the code word, we don't share your recordings."} </Text>
+                <Text style={styles.innerBulletPoint}>  {"• We also use your microphone to record your 5 second audio only in panic mode to send to your contacts only."} </Text>
+                <Text style={styles.innerBulletPoint}>  {"• We use your camera and record your 5 second video only in panic mode to send to your contacts only."} </Text>
+                <Text style={styles.bulletPoint}>   3. Information Sharing and Disclosure</Text>
+                <Text style={styles.body}>   We do not sell your personal information. We may share your data with: </Text>
+                <Text style={styles.innerBulletPoint}>  {"• Emergency Contacts: To alert them in case of emergencies."} </Text>
+                <Text style={styles.innerBulletPoint}>  {"• Service Providers: Third-party vendors helping us deliver app services (e.g., hosting, analytics)."} </Text>
+                <Text style={styles.innerBulletPoint}>  {"• Legal Authorities: When and only when required by the law or to protect your safety or the safety of the others."} </Text>
+                <Text style={styles.bulletPoint}>   4. Data Security</Text>
+                <Text style={styles.body}>   We implement robust measures to protect your data from unauthorized access, disclosure, alteration, or destruction. We are trying our best to update our data security and we will update you in real-time if any breach occurs. Your data will remain secure in our database.</Text>
+                <Text style={styles.bulletPoint}>   5. Your Rights</Text>
+                <Text style={styles.bulletPoint}>   You have the following rights regarding your information:</Text>
+                <Text style={styles.innerBulletPoint}>  {"• Access, update, or delete your personal data."} </Text>
+                <Text style={styles.innerBulletPoint}>  {"• Opt-out of non-essential data collection."} </Text>
+                <Text style={styles.bulletPoint}>   6. Retention of Data</Text>
+                <Text style={styles.body}>   We retain your data for as long as necessary to provide the Service or comply with legal obligations. Upon request, we will delete your data, except where required by the law.</Text>
+                <Text style={styles.bulletPoint}>   7. Changes to This Policy</Text>
+                <Text style={styles.body}>   We may update this privacy policy from time to time. Any changes will be posted within the app and you will be notified of significant updates.</Text>
+                <Text style={styles.body}>   {"If you have questions about this Privacy Policy, please contact us at:\nEmail: travelguide.f24.107@gmail.com"}</Text>
+        </View>
         </ScrollView>
         </View>
     );
@@ -86,7 +114,8 @@ const styles = StyleSheet.create({
         backgroundColor: '#0D1117'
     },
     scrollContainer: {
-        flex: 1
+        flex: 1,
+        marginBottom: 30
     },
     header: {
         flex: 1,
