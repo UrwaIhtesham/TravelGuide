@@ -6,9 +6,11 @@ import SvgComponent from '../../SVG/AppLogo';
 import Panic from "../../SVG/HomePageIcons/Panic";
 import Contacts from "../../SVG/HomePageIcons/Contacts";
 import Profile from "../../SVG/HomePageIcons/Profile";
+import { useNavigation } from "@react-navigation/native";
 
 const BottomNavBar = () => {
     const { width, height } = Dimensions.get('window');
+    const navigation = useNavigation();
 
     return (
         <View style={styles.bottomBarContainer}>
@@ -38,7 +40,7 @@ const BottomNavBar = () => {
 
             <View style={styles.semiCircle}/>
             <View style={styles.logoContainer}>
-                <TouchableOpacity>
+                <TouchableOpacity onPress={() => navigation.navigate('AboutScreen')}>
                 <Image source={require('../../assets/Logo/AppLogo.png')} style={styles.logo}/>
                 </TouchableOpacity>
             </View>
