@@ -49,7 +49,7 @@ const CheckIn = () => {
             </View>
 
             <TouchableOpacity style={styles.submitbutton} onPress={() => navigation.navigate('HomeScreen')}>
-                <Text style={styles.submitbuttonText}>Submt</Text>
+                <Text style={styles.submitbuttonText}>Submit</Text>
             </TouchableOpacity>
             </ScrollView>
         </View>

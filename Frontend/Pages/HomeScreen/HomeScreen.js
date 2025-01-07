@@ -106,7 +106,7 @@ const HomeScreen = () => {
 
                         <View style={styles.featureBoxContainer}>
                         <View style={styles.shadowover}/>
-                        <TouchableOpacity>
+                        <TouchableOpacity onPress={() => navigation.navigate('LowBattery')}>
                         <View style={styles.featureBox}>
                         <View style={styles.shadow}>
                             <Battery/>
