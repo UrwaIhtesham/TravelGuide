@@ -16,6 +16,7 @@ import AboutScreen from './Pages/AboutScreen/aboutScreen';
 import Checkin from './SVG/HomePageIcons/Check-in';
 import CheckIn from './Pages/Features/checkin';
 import LowBattery from './Pages/Features/LowBattery';
+import VoiceCommand from './Pages/Features/VoiceCommand';
 
 const Stack = createStackNavigator();
 
@@ -82,6 +83,11 @@ const App = () => {
         name='LowBattery'
         component={LowBattery}
         options={{ headerShown: false }}
+        />
+        <Stack.Screen
+        name='VoiceCommand'
+        component={VoiceCommand}
+        options={{ headerShown: false}}
         />
       </Stack.Navigator>
     </NavigationContainer>

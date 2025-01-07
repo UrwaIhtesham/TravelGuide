@@ -94,7 +94,7 @@ const HomeScreen = () => {
 
                         <View style={styles.featureBoxContainer}>
                         <View style={styles.shadowover}/>
-                        <TouchableOpacity>
+                        <TouchableOpacity onPress={() => navigation.navigate('VoiceCommand')}>
                         <View style={styles.featureBox}>
                         <View style={styles.shadow}>
                             <Voice/>
