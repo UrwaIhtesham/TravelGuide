@@ -11,6 +11,8 @@ import StartRide1 from './Pages/StartRide/StartRide1';
 import StartRide2 from './Pages/StartRide/StartRide2';
 import StartRide3 from './Pages/StartRide/StartRide3';
 import UserProfile from './Pages/UserProfile/UserProfile';
+import AboutOurPage from './SVG/AboutPageIcons/aboutOurPage';
+import AboutScreen from './Pages/AboutScreen/aboutScreen';
 
 const Stack = createStackNavigator();
 
@@ -61,6 +63,11 @@ const App = () => {
         <Stack.Screen
         name="UserProfile"
         component={UserProfile}
+        options={{ headerShown: false }}
+        />
+        <Stack.Screen
+        name = "AboutScreen"
+        component={AboutScreen}
         options={{ headerShown: false }}
         />
       </Stack.Navigator>
