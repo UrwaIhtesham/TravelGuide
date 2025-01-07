@@ -3,8 +3,9 @@ import { useNavigation } from "@react-navigation/native";
 import BackButton from "../../SVG/Backbutton";
 import { ScrollView, StyleSheet, View, TouchableOpacity, Text, Image } from "react-native";
 import VoiceCommandSVG from "../../SVG/FeaturesScreenIcons/voiceCommand";
+import PanicSVG from "../../SVG/FeaturesScreenIcons/panic";
 
-const VoiceCommand = () => {
+const PanicMode = () => {
     const navigation = useNavigation();
 
     return(
@@ -14,16 +15,16 @@ const VoiceCommand = () => {
                     <TouchableOpacity onPress={() => navigation.navigate('HomeScreen')}>
                         <BackButton />
                     </TouchableOpacity>
-                    <Text style={styles.headerText}>Code Word Detected</Text>
+                    <Text style={styles.headerText}>Panic Mode</Text>
                 </View>
 
                 <View style={styles.img}>
-                    <VoiceCommandSVG />
+                    <PanicSVG />
                 </View>
 
-                <Text style={styles.codewordText}>CODE WORD detected...</Text>
+                <Text style={styles.codewordText}>PANIC MODE ACTIVATED...</Text>
 
-                <Text style={styles.textt}>Code word detected. Activating panic mode and notifying your emergency contacts.</Text>
+                <Text style={styles.textt}>Panic Mode activated. Notifying emergency contacts. (Location, Audio, Video files sent)</Text>
 
                 <TouchableOpacity style={styles.cancelbutton} onPress={() => navigation.navigate('HomeScreen')}>
                     <Text style={styles.cancelbuttonText}>Cancel</Text>
@@ -114,4 +115,4 @@ const styles = StyleSheet.create({
     }
 });
 
-export default VoiceCommand;
+export default PanicMode;

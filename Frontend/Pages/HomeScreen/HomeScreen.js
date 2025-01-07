@@ -82,7 +82,7 @@ const HomeScreen = () => {
                     <View style={styles.featuresRow}>
                     <View style={styles.featureBoxContainer}>
                     <View style={styles.shadowover}/>
-                        <TouchableOpacity>
+                        <TouchableOpacity onPress={() => navigation.navigate('PanicMode')}>
                         <View style={styles.featureBox}>
                             <View style={styles.shadow}>
                             <Alert/>

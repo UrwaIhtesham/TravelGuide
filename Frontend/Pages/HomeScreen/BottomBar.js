@@ -32,7 +32,7 @@ const BottomNavBar = () => {
                     <Text style={styles.iconText}>Contacts</Text>
                 </TouchableOpacity>
 
-                <TouchableOpacity style={styles.iconContainer}>
+                <TouchableOpacity style={styles.iconContainer} onPress={() => navigation.navigate('PanicMode')}>
                     <Panic/>
                     <Text style={styles.iconText}>Panic Mode</Text>
                 </TouchableOpacity>

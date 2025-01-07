@@ -17,6 +17,7 @@ import Checkin from './SVG/HomePageIcons/Check-in';
 import CheckIn from './Pages/Features/checkin';
 import LowBattery from './Pages/Features/LowBattery';
 import VoiceCommand from './Pages/Features/VoiceCommand';
+import PanicMode from './Pages/Features/panicmode';
 
 const Stack = createStackNavigator();
 
@@ -88,6 +89,11 @@ const App = () => {
         name='VoiceCommand'
         component={VoiceCommand}
         options={{ headerShown: false}}
+        />
+        <Stack.Screen
+        name='PanicMode'
+        component={PanicMode}
+        options={{ headerShown: false }}
         />
       </Stack.Navigator>
     </NavigationContainer>
