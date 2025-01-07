@@ -13,6 +13,8 @@ import StartRide3 from './Pages/StartRide/StartRide3';
 import UserProfile from './Pages/UserProfile/UserProfile';
 import AboutOurPage from './SVG/AboutPageIcons/aboutOurPage';
 import AboutScreen from './Pages/AboutScreen/aboutScreen';
+import Checkin from './SVG/HomePageIcons/Check-in';
+import CheckIn from './Pages/Features/checkin';
 
 const Stack = createStackNavigator();
 
@@ -68,6 +70,11 @@ const App = () => {
         <Stack.Screen
         name = "AboutScreen"
         component={AboutScreen}
+        options={{ headerShown: false }}
+        />
+        <Stack.Screen
+        name="CheckIn"
+        component={CheckIn}
         options={{ headerShown: false }}
         />
       </Stack.Navigator>
