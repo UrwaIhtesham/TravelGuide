@@ -4,11 +4,36 @@ import SignUpSVG from "../../SVG/SignUp";
 import * as Font from 'expo-font';
 import { useEffect, useState } from "react";
 import { useNavigation } from "@react-navigation/native";
+import axios from "axios";
 
 const SignUp = () => {
     const {width,height} = Dimensions.get('window');
     const [fontLoaded, setFontLoaded] = useState(false);
     const navigation = useNavigation();
+
+    const [form, setForm] = useState({
+        full_name: "",
+        email: "",
+        phone_number: "",
+        CNIC: "",
+        gender: "",
+        date_of_birth: "",
+        password: "",
+    });
+
+    const handleChange = (name, value) => {
+        setForm({ ...form, [name]: value});
+    };
+
+    const handleSignUp = async() => {
+        try {
+            const response = await axios.post("http://192.168.10.13:8000/api/signup/", form);
+            Alert.alert("Success", "account Created Successfully");
+            navigation.navigate('HomeScreen');
+        } catch (error) {
+            Alert.alert("Error", "Signup failed. Check your details and try again.")
+        }
+    };
 
     useEffect(() => {
         const loadFont = async () => {
@@ -33,19 +58,26 @@ const SignUp = () => {
 
             <Text style={styles.headerText}>Create an account</Text>
 
-            <TextInput style={styles.input} placeholder="Enter Your Username" placeholderTextColor="#B0BEC5"/>
-            <TextInput style={styles.input} placeholder="Enter Your Email" placeholderTextColor="#B0BEC5"/>
-            <TextInput style={styles.input} placeholder="Enter Your Phone Number" placeholderTextColor="#B0BEC5"/>
-            <TextInput style={styles.input} placeholder="Enter Your CNIC" placeholderTextColor="#B0BEC5"/>
-            <TextInput style={styles.input} placeholder="Enter Gender" placeholderTextColor="#B0BEC5"/>
-            <TextInput style={styles.input} placeholder="Enter Date of Birth" placeholderTextColor="#B0BEC5"/>
-            <TextInput style={styles.input} placeholder="Enter Your Password" placeholderTextColor="#B0BEC5" secureTextEntry/>
+            <TextInput style={styles.input} placeholder="Enter Your Username" placeholderTextColor="#B0BEC5"
+                onChangeText={(text) => handleChange("full_name", text)}/>
+            <TextInput style={styles.input} placeholder="Enter Your Email" placeholderTextColor="#B0BEC5"
+                onChangeText={(text) => handleChange("email", text)} keyboardType="email-address" />
+            <TextInput style={styles.input} placeholder="Enter Your Phone Number" placeholderTextColor="#B0BEC5"
+                onChangeText={(text) => handleChange("phone_number", text)} keyboardType="phone-pad"/>
+            <TextInput style={styles.input} placeholder="Enter Your CNIC" placeholderTextColor="#B0BEC5"
+                onChangeText={(text) => handleChange("CNIC", text)} keyboardType="numeric"/>
+            <TextInput style={styles.input} placeholder="Enter Gender" placeholderTextColor="#B0BEC5"
+                onChangeText={(text) => handleChange("gender", text)}/>
+            <TextInput style={styles.input} placeholder="Enter Date of Birth" placeholderTextColor="#B0BEC5"
+                onChangeText={(text) => handleChange("date_of_birth", text)}/>
+            <TextInput style={styles.input} placeholder="Enter Your Password" placeholderTextColor="#B0BEC5" secureTextEntry
+                onChangeText={(text) => handleChange("password", text)}/>
 
             <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('AddEmergencyContact')}>
                 <Text style={styles.buttonText}>Add Emergency Contacts</Text>
             </TouchableOpacity>
 
-            <TouchableOpacity style={styles.signupbutton} onPress={() => navigation.navigate('HomeScreen')}>
+            <TouchableOpacity style={styles.signupbutton} onPress={handleSignUp}>
                 <Text style={styles.signupbuttonText}>Sign Up</Text>
             </TouchableOpacity>
 
