@@ -13,6 +13,11 @@ import StartRide3 from './Pages/StartRide/StartRide3';
 import UserProfile from './Pages/UserProfile/UserProfile';
 import AboutOurPage from './SVG/AboutPageIcons/aboutOurPage';
 import AboutScreen from './Pages/AboutScreen/aboutScreen';
+import Checkin from './SVG/HomePageIcons/Check-in';
+import CheckIn from './Pages/Features/checkin';
+import LowBattery from './Pages/Features/LowBattery';
+import VoiceCommand from './Pages/Features/VoiceCommand';
+import PanicMode from './Pages/Features/panicmode';
 
 const Stack = createStackNavigator();
 
@@ -68,6 +73,26 @@ const App = () => {
         <Stack.Screen
         name = "AboutScreen"
         component={AboutScreen}
+        options={{ headerShown: false }}
+        />
+        <Stack.Screen
+        name="CheckIn"
+        component={CheckIn}
+        options={{ headerShown: false }}
+        />
+        <Stack.Screen
+        name='LowBattery'
+        component={LowBattery}
+        options={{ headerShown: false }}
+        />
+        <Stack.Screen
+        name='VoiceCommand'
+        component={VoiceCommand}
+        options={{ headerShown: false}}
+        />
+        <Stack.Screen
+        name='PanicMode'
+        component={PanicMode}
         options={{ headerShown: false }}
         />
       </Stack.Navigator>

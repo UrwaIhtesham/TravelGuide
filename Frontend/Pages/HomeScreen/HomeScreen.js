@@ -82,7 +82,7 @@ const HomeScreen = () => {
                     <View style={styles.featuresRow}>
                     <View style={styles.featureBoxContainer}>
                     <View style={styles.shadowover}/>
-                        <TouchableOpacity>
+                        <TouchableOpacity onPress={() => navigation.navigate('PanicMode')}>
                         <View style={styles.featureBox}>
                             <View style={styles.shadow}>
                             <Alert/>
@@ -94,7 +94,7 @@ const HomeScreen = () => {
 
                         <View style={styles.featureBoxContainer}>
                         <View style={styles.shadowover}/>
-                        <TouchableOpacity>
+                        <TouchableOpacity onPress={() => navigation.navigate('VoiceCommand')}>
                         <View style={styles.featureBox}>
                         <View style={styles.shadow}>
                             <Voice/>
@@ -106,7 +106,7 @@ const HomeScreen = () => {
 
                         <View style={styles.featureBoxContainer}>
                         <View style={styles.shadowover}/>
-                        <TouchableOpacity>
+                        <TouchableOpacity onPress={() => navigation.navigate('LowBattery')}>
                         <View style={styles.featureBox}>
                         <View style={styles.shadow}>
                             <Battery/>
@@ -118,7 +118,7 @@ const HomeScreen = () => {
 
                         <View style={styles.featureBoxContainer}>
                         <View style={styles.shadowover}/>
-                        <TouchableOpacity>
+                        <TouchableOpacity onPress={() => navigation.navigate("CheckIn")}>
                         <View style={styles.featureBox}>
                         <View style={styles.shadow}>
                             <Checkin/>
