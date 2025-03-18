@@ -2,6 +2,7 @@
   "expo": {
     "name": "TravelGuide",
     "slug": "TravelGuide",
+    "plugins":["expo-notifications"],
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -18,7 +19,8 @@
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#ffffff"
+        "backgroundColor": "#ffffff",
+        "permissions": ["BATTERY_STATS"]
       }
     },
     "web": {

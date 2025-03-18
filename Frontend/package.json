@@ -9,6 +9,7 @@
     "web": "expo start --web"
   },
   "dependencies": {
+<<<<<<< Updated upstream
     "@expo/metro-config": "^0.19.8",
     "@react-native-picker/picker": "2.10.2",
     "@react-navigation/native": "^7.0.14",
@@ -18,6 +19,22 @@
     "react": "^18.2.0",
     "react-native": "0.76.5",
     "react-native-svg": "15.10.1"
+=======
+    "@expo/metro-config": "^0.18.11",
+    "@react-navigation/native": "^6.1.18",
+    "@react-navigation/stack": "^6.4.1",
+    "call-bound": "^1.0.4",
+    "expo": "~51.0.28",
+    "expo-battery": "~8.0.1",
+    "expo-notifications": "~0.28.19",
+    "expo-status-bar": "~1.12.1",
+    "has-symbols": "^1.1.0",
+    "has-tostringtag": "^1.0.2",
+    "is-arguments": "^1.2.0",
+    "react": "18.2.0",
+    "react-native": "0.74.5",
+    "react-native-svg": "15.2.0"
+>>>>>>> Stashed changes
   },
   "devDependencies": {
     "@babel/core": "^7.26.0",

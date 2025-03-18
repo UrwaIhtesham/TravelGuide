@@ -1,7 +1,9 @@
-import React from 'react';
-import { NavigationContainer } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
+// App.js
+import React from "react";
+import { NavigationContainer } from "@react-navigation/native";
+import { createStackNavigator } from "@react-navigation/stack";
 
+<<<<<<< Updated upstream
 import SplashScreen from './Pages/MainPage/SplashScreen';
 import SignUp from './Pages/SignUp/SignUp';
 import AddEmergencyContact from './Pages/SignUp/AddEmergencyContact';
@@ -18,32 +20,49 @@ import CheckIn from './Pages/Features/checkin';
 import LowBattery from './Pages/Features/LowBattery';
 import VoiceCommand from './Pages/Features/VoiceCommand';
 import PanicMode from './Pages/Features/panicmode';
+=======
+import SplashScreen from "./Pages/MainPage/SplashScreen";
+import SignUp from "./Pages/SignUp/SignUp";
+import AddEmergencyContact from "./Pages/SignUp/AddEmergencyContact";
+import HomeScreen from "./Pages/HomeScreen/HomeScreen";
+import LowBatteryScreen from "./Pages/LowBatteryScreen/Lowbattery";
+import useBatteryMonitor from "./utils/useBatteryMonitor";
+>>>>>>> Stashed changes
 
 const Stack = createStackNavigator();
 
 const App = () => {
+  
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName='Splash'>
+      <Stack.Navigator initialRouteName="Splash">
         <Stack.Screen
-        name="Splash"
-        component={SplashScreen}
-        options={{ headerShown: false}} 
+          name="Splash"
+          component={SplashScreen}
+          options={{ headerShown: false }}
         />
         <Stack.Screen
-        name="SignUp"
-        component={SignUp}
-        options={{ headerShown: false}}
+          name="SignUp"
+          component={SignUp}
+          options={{ headerShown: false }}
         />
         <Stack.Screen
-        name="AddEmergencyContact"
-        component={AddEmergencyContact}
-        options={{ headerShown: false }}
+          name="AddEmergencyContact"
+          component={AddEmergencyContact}
+          options={{ headerShown: false }}
         />
         <Stack.Screen
-        name="HomeScreen"
-        component={HomeScreen}
-        options={{ headerShown: false }}
+          name="HomeScreen"
+          component={(props) => {
+            useBatteryMonitor(props.navigation); // Pass navigation prop
+            return <HomeScreen {...props} />;
+          }}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="LowBatteryScreen"
+          component={LowBatteryScreen}
+          options={{ headerShown: false }}
         />
         <Stack.Screen
         name="Login"
