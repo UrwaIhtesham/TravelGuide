@@ -1,9 +1,9 @@
 import React from "react";
-import { View, Text, StyleSheet, Dimensions, SafeAreaView, ActivityIndicator, ScrollView, Touchable, TouchableOpacity, TextInput, Pressable, Platform, Alert } from "react-native";
+import { View, Text, StyleSheet, Dimensions, SafeAreaView, ActivityIndicator, ScrollView, TouchableOpacity, TextInput, Pressable, Platform, Alert } from "react-native";
 import SignUpSVG from "../../SVG/SignUp";
 import * as Font from 'expo-font';
 import { useEffect, useState } from "react";
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, useRoute } from "@react-navigation/native";
 import axios from "axios";
 import RNPickerSelect from "react-native-picker-select";
 //import DatePicker from "react-native-datepicker";
@@ -15,10 +15,15 @@ const SignUp = () => {
     const {width,height} = Dimensions.get('window');
     const [fontLoaded, setFontLoaded] = useState(false);
     const navigation = useNavigation();
+    const route = useRoute();
     const [date_of_birth, setDateOfBirth] = useState("");
     const [date, setDate] = useState(new Date());
     const [showPicker, setShowPicker] = useState(false);
     const [show, setShow] = useState(false);
+    //const [emergencyContacts, setEmergencyContacts] = useState([]);
+
+    const emergencyContacts = route.params?.emergencyContacts || [];
+    const signUpData = route.params?.signUpData || {};
 
     const [form, setForm] = useState({
         full_name: "",
@@ -29,6 +34,10 @@ const SignUp = () => {
         date_of_birth: "",
         password: "",
     });
+
+    useEffect(() => {
+        console.log("Updated Params from AddEmergencyContact:", route.params);
+    }, [route.params]);
 
     const toggleDatePicker = () => {
         console.log("Date picker toggled");
@@ -55,6 +64,16 @@ const SignUp = () => {
     //     setShow(false);
     // };
 
+    // useEffect(() => {
+    //     if (signUpData && JSON.stringify(signUpData) !== JSON.stringify(form)) {
+    //         setForm((prevForm) => ({
+    //             ...prevForm,
+    //             ...signUpData,
+    //         }));
+    //     }
+    // }, [signUpData, form]);
+    
+
     const handleChange = (name, value) => {
         setForm({ ...form, [name]: value});
     };
@@ -62,7 +81,12 @@ const SignUp = () => {
     const handleSignUp = async() => {
         try {
             const response = await axios.post("http://192.168.10.13:8000/api/signup/", form);
-            console.log("Response data:", response.data);
+            console.log("User Registered:", response.data);
+
+            if (response.data.user) {
+                console.log("User ID:", response.data.user_id);
+                await registerEmergencyContacts(response.data.user);
+            }
 
             if (response.data.message) {
                 console.log("Success Message:", response.data.message);
@@ -88,6 +112,38 @@ const SignUp = () => {
         }
     };
 
+    const registerEmergencyContacts = async (userId) => {
+
+        if (emergencyContacts.length === 0) {
+            console.log("Empty emergency contacts");
+            return;
+        }
+
+        try {
+            const response = await axios.post("http://192.168.10.13:8000/api/emergency-contacts/add/", {
+                user_id: userId,
+                contacts: emergencyContacts
+            });
+
+            console.log("Eergency contacts added:", response.data);
+        } catch (error) {
+            console.log("Error Adding emergency contacts:", error.response?.data || error);
+        }
+    };
+
+    useEffect(() => {
+        //console.log(route.params);
+        if (emergencyContacts) {
+            //setEmergencyContacts(route.params?.emergencyContacts);
+            console.log("Emergency Contacts: ", emergencyContacts);
+        }
+        if (signUpData) {
+            console.log("Sgn up data:", signUpData);
+        }
+        //console.log("Emergency Contacts: ", emergencyContacts);
+        //console.log(signUpData);
+    }, [route.params]);
+
     useEffect(() => {
         const loadFont = async () => {
             await Font.loadAsync({
@@ -112,12 +168,16 @@ const SignUp = () => {
             <Text style={styles.headerText}>Create an account</Text>
 
             <TextInput style={styles.input} placeholder="Enter Your Username" placeholderTextColor="#B0BEC5"
+                value={form.full_name}
                 onChangeText={(text) => handleChange("full_name", text)}/>
             <TextInput style={styles.input} placeholder="Enter Your Email" placeholderTextColor="#B0BEC5"
+                value={form.email}
                 onChangeText={(text) => handleChange("email", text)} keyboardType="email-address" />
             <TextInput style={styles.input} placeholder="Enter Your Phone Number" placeholderTextColor="#B0BEC5"
+                value={form.phone_number}
                 onChangeText={(text) => handleChange("phone_number", text)} keyboardType="phone-pad"/>
             <TextInput style={styles.input} placeholder="Enter Your CNIC" placeholderTextColor="#B0BEC5"
+                value={form.CNIC}
                 onChangeText={(text) => handleChange("CNIC", text)} keyboardType="numeric"/>
             {/*<TextInput style={styles.input} placeholder="Enter Gender" placeholderTextColor="#B0BEC5"
                 onChangeText={(text) => handleChange("gender", text)}/>*/}
@@ -131,6 +191,7 @@ const SignUp = () => {
                     ]}
                     placeholder={{ label: "Select Gender", value: null }}
                     style={styles.input}
+                    value={form.gender}
                 />
             </View>
             {/*<TextInput style={styles.input} placeholder="Enter Date of Birth" placeholderTextColor="#B0BEC5"
@@ -163,7 +224,7 @@ const SignUp = () => {
                 <TextInput
                 style={styles.input}
                 placeholder="Select Date of Birth"
-                value= {date_of_birth}
+                value= {form.date_of_birth}
                 onChangeText={setDateOfBirth}
                 placeholderTextColor="#B0BEC5"
                 editable={false}
@@ -172,9 +233,13 @@ const SignUp = () => {
                 )}
             </View>
             <TextInput style={styles.input} placeholder="Enter Your Password" placeholderTextColor="#B0BEC5" secureTextEntry
+                value={form.password}
                 onChangeText={(text) => handleChange("password", text)}/>
 
-            <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('AddEmergencyContact')}>
+            <TouchableOpacity style={styles.button} 
+                onPress={() => navigation.navigate('AddEmergencyContact', {
+                    signUpData: form
+                })}>
                 <Text style={styles.buttonText}>Add Emergency Contacts</Text>
             </TouchableOpacity>
 

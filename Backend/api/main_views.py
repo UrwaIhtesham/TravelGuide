@@ -2,8 +2,8 @@ from django.shortcuts import render
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 import json
-from .models import User
-from .serializers import UserSerializer
+from .main_models import User
+from .main_serializers import UserSerializer
 from rest_framework.decorators import api_view
 
 # signup POST api
@@ -15,7 +15,7 @@ def signup(request):
             serializer = UserSerializer(data=data)
             if serializer.is_valid():
                 serializer.save()
-                return JsonResponse({"message": "User created successfully", "user": serializer.data}, status = 201)
+                return JsonResponse({"message": "User created successfully", "user": serializer.data["user_id"]}, status = 201)
             
             return JsonResponse({"errors": serializer.errors}, status=400)
 
