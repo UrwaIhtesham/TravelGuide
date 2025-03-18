@@ -1,11 +1,42 @@
-import React from "react";
-import { View, TextInput, TouchableOpacity, Image, StyleSheet, Text, Dimensions, ScrollView } from "react-native";
+import React, { useState } from "react";
+import { View, TextInput, TouchableOpacity, Image, StyleSheet, Text, Dimensions, ScrollView, ToastAndroid, Platform } from "react-native";
 import * as Font from 'expo-font';
 import LogInIcon from "../../SVG/LoginPageIcons/LoginIcon";
 import { useNavigation } from "@react-navigation/native";
+import axios from 'axios';
 
 const Login = () => {
     const navigation = useNavigation();
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+
+    function notifyMessage(msg) {
+        if (Platform.OS === 'android') {
+            ToastAndroid.show(msg, ToastAndroid.SHORT);
+        }
+    }
+
+    const handleLogin = async () => {
+        try {
+            const response = await axios.post("http://192.168.10.13:8000/api/login/", {
+                email, 
+                password
+            });
+
+            if (response.status === 200) {
+                notifyMessage("SUCCESS!! Login Successful!");
+                navigation.navigate("HomeScreen") 
+            }
+        } catch (error) {
+            if (error.response) {
+                const errorMessage = 'Error: Login Failed. ' + error.response.data.error;
+                notifyMessage(errorMessage);
+            } else {
+                notifyMessage("Error!! Something went wrong!");
+            }
+        }
+    };
+
     return (
         <ScrollView contentContainerStyle={styles.container}>
             <View style={styles.img}>
@@ -15,17 +46,19 @@ const Login = () => {
             <Text style={styles.headerText}>Already have an account</Text>
 
             <Text style={styles.heading}>Email</Text>
-            <TextInput style={styles.input} placeholder="Enter Your Username" placeholderTextColor="#B0BEC5"/>
+            <TextInput style={styles.input} placeholder="Enter Your Email" placeholderTextColor="#B0BEC5"
+                value={email} onChangeText={setEmail}/>
             <Text style={styles.heading}>Password</Text>
-            <TextInput style={styles.input} placeholder="Enter Your Password" placeholderTextColor="#B0BEC5" secureTextEntry/>
+            <TextInput style={styles.input} placeholder="Enter Your Password" placeholderTextColor="#B0BEC5" secureTextEntry
+                value={password} onChangeText={setPassword}/>
 
-            <TouchableOpacity style={styles.signupbutton} onPress={() => navigation.navigate('HomeScreen')}>
+            <TouchableOpacity style={styles.signupbutton} onPress={handleLogin}>
                 <Text style={styles.signupbuttonText}>Login</Text>
             </TouchableOpacity>
 
             <Text style={styles.footerText}>
                 Don't have an account?{' '}
-                <TouchableOpacity onPress={() => navigation.navigate('Sign Up')}>
+                <TouchableOpacity onPress={() => navigation.navigate('SignUp')}>
                     <Text style={styles.loginText}>Sign Up</Text>
                 </TouchableOpacity>
             </Text>
