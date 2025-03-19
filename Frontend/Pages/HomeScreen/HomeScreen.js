@@ -1,5 +1,5 @@
 import React, {useEffect, useState } from 'react';
-import {View, Text, StyleSheet, Dimensions, ScrollView,TouchableOpacity, ActivityIndicator, Button } from 'react-native';
+import {View, Text, StyleSheet, Dimensions, ScrollView,TouchableOpacity, ActivityIndicator, Button, Platform, ToastAndroid } from 'react-native';
 import * as Font from 'expo-font';
 
 import BottomNavBar from './BottomBar';
@@ -7,7 +7,7 @@ import BottomNavBar from './BottomBar';
 import PencilIcon from '../../SVG/HomePageIcons/PencilIcon';
 import Person from '../../SVG/HomePageIcons/Person';
 import Car from '../../SVG/HomePageIcons/Car';
-import Alert from '../../SVG/HomePageIcons/Alert';
+import AlertIcon from '../../SVG/HomePageIcons/Alert';
 import Voice from '../../SVG/HomePageIcons/Voice';
 import Battery from '../../SVG/HomePageIcons/Battery';
 import Checkin from '../../SVG/HomePageIcons/Check-in';
@@ -16,11 +16,20 @@ import ForwardArrow from '../../SVG/HomePageIcons/ForwardArrow';
 import Home from '../../SVG/HomePageIcons/Home';
 import logoutUser from '../utils/logout';
 import { useNavigation } from '@react-navigation/native';
+import axios from 'axios';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { Alert } from 'react-native';
 
 const HomeScreen = () => {
     const {width, height} = Dimensions.get('window');
     const [fontLoaded, setFontLoaded] = useState(false);
     const navigation=useNavigation();
+
+    function notifyMessage(msg) {
+        if (Platform.OS === 'android') {
+            ToastAndroid.show(msg, ToastAndroid.SHORT);
+        }
+    }
 
     useEffect(() => {
         const loadFont = async () => {
@@ -35,6 +44,29 @@ const HomeScreen = () => {
 
     if (!fontLoaded){
         return <ActivityIndicator size="small" color="#E3F2FD" />
+    }
+
+    const checkEmergencyContacts = async () => {
+        try {
+            const user_id = await AsyncStorage.getItem("user_id");
+            console.log(user_id);
+            const response = await axios.get("http://192.168.10.13:8000/api/emergency-count/", {
+                params: { user_id }
+            });
+            console.log(response);
+            console.log(user_id);
+
+            console.log(response.data.contact_count);
+
+            if (response.data.contact_count === 0) {
+                Alert.alert("No emergency Contacts found", "Please add atleast one emergency count before starting a ride.");
+            } else {
+                navigation.navigate("StartRide1");
+            }
+        } catch (error) {
+            console.error("Error fetching emergency contacts: ", error);
+            notifyMessage(`Unable to fetch emergency contacts. Please try again.`);
+        }
     }
 
     return (
@@ -85,7 +117,7 @@ const HomeScreen = () => {
                         <TouchableOpacity onPress={() => navigation.navigate('PanicMode')}>
                         <View style={styles.featureBox}>
                             <View style={styles.shadow}>
-                            <Alert/>
+                            <AlertIcon/>
                             </View>
                             <Text style={styles.featureText}>Panic Mode</Text>
                         </View>
@@ -136,7 +168,7 @@ const HomeScreen = () => {
                             <Text style={styles.rideInProgressText}>Start Ride</Text>
                         </View>
                         <Text style={styles.rideDetails}>Start your race with enhanced safety features and real-time monitoring for a secure journey</Text>
-                        <TouchableOpacity style={styles.arrowContainer} onPress={() => navigation.navigate('StartRide1')}>
+                        <TouchableOpacity style={styles.arrowContainer} onPress={checkEmergencyContacts}>
                             <ForwardArrow/>
                         </TouchableOpacity>
                     </View>

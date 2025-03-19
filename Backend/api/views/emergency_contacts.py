@@ -40,15 +40,19 @@ def add_emergency_contact(request):
 
     EmergencyContact.objects.bulk_create(emergency_contacts)
     return JsonResponse({"message": "Emergency contacts added successfully"}, status = 201)
-    # try:
-    #     data = json.loads(request.body)
-    #     serializer = EmergencyContactSerializer(data=data)
-    #     if serializer.is_valid():
-    #         serializer.save()
-    #         return JsonResponse({"message": "Emergency contact added successfully", "contact": serializer.data}, status=201)
-        
-    #     return JsonResponse({"errors": serializer.errors}, status=400)
+
+@api_view(['GET'])
+def get_emergency_count(request):
+    userid = request.GET.get("user_id")
+    print(f"Userid: {userid}")
+    if not userid:
+        return JsonResponse({'error': 'user_id not found.'}, status = 400)
     
-    # except json.JSONDecodeError:
-    #     return JsonResponse({"error": "Invalid JSON format"}, status=400)
+    try:
+        contact_count = EmergencyContact.objects.filter(user_id=userid).count()
+        return JsonResponse({"user_id": userid, "contact_count": contact_count}, status=200)
+    except Exception as e:
+        return JsonResponse({'error': str(e)}, status=500)
+    
+
     

@@ -1,7 +1,7 @@
 from django.urls import path
 from .main_views import signup
 from .main_views import get_users, verify_email
-from .views.emergency_contacts import add_emergency_contact, get_emergency_contacts
+from .views.emergency_contacts import add_emergency_contact, get_emergency_contacts, get_emergency_count
 from api.views.login_views import login_user, check_session, logout_user
 
 urlpatterns = [
@@ -13,4 +13,5 @@ urlpatterns = [
     path("verify/<str:uidb64>/<str:token>/", verify_email, name="verify_email"),
     path("check-session/", check_session, name='check_session'),
     path("logout_user/", logout_user, name="logout_user"),
+    path("emergency-count/", get_emergency_count, name="get_emergency_count"),
 ]
