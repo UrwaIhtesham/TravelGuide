@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 
@@ -19,10 +19,26 @@ import LowBattery from './Pages/Features/LowBattery';
 import VoiceCommand from './Pages/Features/VoiceCommand';
 import PanicMode from './Pages/Features/panicmode';
 import VerifyEmail from './Pages/utils/Verify';
+import checkSession from './Pages/utils/CheckSession';
 
 const Stack = createStackNavigator();
 
 const App = () => {
+
+  const navigationRef = useRef();
+
+    useEffect(() => {
+        const unsubscribe = navigationRef.current?.addListener("state", () => {
+            checkSession(navigationRef.current);
+        });
+
+        return () => {
+            if (unsubscribe) {
+                unsubscribe();
+            }
+        };
+    }, []);
+
   return (
     <NavigationContainer>
       <Stack.Navigator initialRouteName='Splash'>

@@ -10,6 +10,7 @@ import RNPickerSelect from "react-native-picker-select";
 //import DatePicker from "expo-datepicker";
 import DateTimePicker from "@react-native-community/datetimepicker"
 //import { Platform } from "react-native";
+import checkSession from "../utils/CheckSession";
 
 const SignUp = () => {
     const {width,height} = Dimensions.get('window');
@@ -40,6 +41,10 @@ const SignUp = () => {
             ToastAndroid.show(msg, ToastAndroid.SHORT);
         }
     }
+
+    useEffect(() => {
+        checkSession(navigation);
+      }, [navigation]);
 
     useEffect(() => {
         console.log("Updated Params from AddEmergencyContact:", route.params);
