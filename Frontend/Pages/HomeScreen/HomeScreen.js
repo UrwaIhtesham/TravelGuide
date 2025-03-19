@@ -1,5 +1,5 @@
 import React, {useEffect, useState } from 'react';
-import {View, Text, StyleSheet, Dimensions, ScrollView,TouchableOpacity, ActivityIndicator } from 'react-native';
+import {View, Text, StyleSheet, Dimensions, ScrollView,TouchableOpacity, ActivityIndicator, Button } from 'react-native';
 import * as Font from 'expo-font';
 
 import BottomNavBar from './BottomBar';
@@ -14,7 +14,7 @@ import Checkin from '../../SVG/HomePageIcons/Check-in';
 import Shield from '../../SVG/HomePageIcons/Shield';
 import ForwardArrow from '../../SVG/HomePageIcons/ForwardArrow';
 import Home from '../../SVG/HomePageIcons/Home';
-
+import logoutUser from '../utils/logout';
 import { useNavigation } from '@react-navigation/native';
 
 const HomeScreen = () => {
@@ -117,30 +117,36 @@ const HomeScreen = () => {
                         </View>
 
                         <View style={styles.featureBoxContainer}>
-                        <View style={styles.shadowover}/>
-                        <TouchableOpacity onPress={() => navigation.navigate("CheckIn")}>
-                        <View style={styles.featureBox}>
-                        <View style={styles.shadow}>
-                            <Checkin/>
+                            <View style={styles.shadowover}/>
+                                <TouchableOpacity onPress={() => navigation.navigate("CheckIn")}>
+                                <View style={styles.featureBox}>
+                                    <View style={styles.shadow}>
+                                        <Checkin/>
+                                    </View>
+                                    <Text style={styles.featureText}>Safety Check-ins</Text>
+                                </View>
+                                </TouchableOpacity>
                             </View>
-                            <Text style={styles.featureText}>Safety Check-ins</Text>
                         </View>
+                    </View>
+
+                    <View style={styles.rideInProgress}>
+                        <View style={styles.oneline}>
+                            <Shield/>
+                            <Text style={styles.rideInProgressText}>Start Ride</Text>
+                        </View>
+                        <Text style={styles.rideDetails}>Start your race with enhanced safety features and real-time monitoring for a secure journey</Text>
+                        <TouchableOpacity style={styles.arrowContainer} onPress={() => navigation.navigate('StartRide1')}>
+                            <ForwardArrow/>
                         </TouchableOpacity>
-                        </View>
+                    </View>
+
+                    <View style={styles.logoutButton }>
+                    <Button title="Logout" onPress={() => logoutUser(navigation)} />
                     </View>
                 </View>
 
-                <View style={styles.rideInProgress}>
-                    <View style={styles.oneline}>
-                        <Shield/>
-                        <Text style={styles.rideInProgressText}>Start Ride</Text>
-                    </View>
-                    <Text style={styles.rideDetails}>Start your race with enhanced safety features and real-time monitoring for a secure journey</Text>
-                    <TouchableOpacity style={styles.arrowContainer} onPress={() => navigation.navigate('StartRide1')}>
-                        <ForwardArrow/>
-                    </TouchableOpacity>
-                </View>
-                </View>
+                
             </ScrollView>
 
             <BottomNavBar />
@@ -332,6 +338,15 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         width: '100%',
         marginBottom: 20,
+    },
+    logoutButton: {
+        backgroundColor: '#1C2333',
+        borderRadius: 25,
+        fontSize: 35,
+        marginBottom: 20,
+        borderColor: '#2B99F3',
+        width: '100%',
+        textAlign: 'center',
     },
     rideInProgressText: {
         color: '#3566b0',

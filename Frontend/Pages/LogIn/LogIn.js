@@ -4,6 +4,7 @@ import * as Font from 'expo-font';
 import LogInIcon from "../../SVG/LoginPageIcons/LoginIcon";
 import { useNavigation } from "@react-navigation/native";
 import axios from 'axios';
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const Login = () => {
     const navigation = useNavigation();
@@ -18,12 +19,16 @@ const Login = () => {
 
     const handleLogin = async () => {
         try {
-            const response = await axios.post("http://192.168.10.13:8000/api/login/", {
-                email, 
-                password
-            });
+            const response = await axios.post("http://192.168.10.13:8000/api/login/", 
+                { email, password },
+                { withCredentials: true }
+            );
 
             if (response.status === 200) {
+                await AsyncStorage.setItem("session", JSON.stringify(response.data.session_id));
+                await AsyncStorage.setItem("user_id", JSON.stringify(response.data.user_id));
+                const session = await AsyncStorage.getItem("session");
+                console.log(`Session: ${session}`);
                 notifyMessage("SUCCESS!! Login Successful!");
                 navigation.navigate("HomeScreen") 
             }
