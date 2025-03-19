@@ -102,7 +102,7 @@ const SignUp = () => {
                 const uid = response.data.uid;
                 const token = response.data.token;
 
-                navigation.navigate("VerifyEmail", {uid, token});
+                //navigation.navigate("VerifyEmail", {uid, token});
                 notifyMessage("Signup successful! Please check your email for verification.");
             }
             notifyMessage("SUCCESS!! Check your email to verify your account!");

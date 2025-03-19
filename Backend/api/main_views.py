@@ -30,7 +30,7 @@ def signup(request):
                 verification_link = f"http://192.168.10.13:8000/api/verify/{uid}/{token}/"
 
                 send_mail(
-                    subject="VErify Your EMail",
+                    subject="Verify Your EMail",
                     message=f"Click the link to verify your account: {verification_link}",
                     from_email="travelguide.f24.107@gmail.com",
                     recipient_list=[user.email],
