@@ -44,7 +44,7 @@ const StartRide3 = () => {
         setModalvisible(false);
     };
 
-    const handleStartRide = () => {
+    const handleStartRide = async () => {
         const updatedStartRideForm = {
             ...startRideForm,
             rideCode: rideCode,
@@ -52,6 +52,21 @@ const StartRide3 = () => {
         };
 
         console.log(updatedStartRideForm);
+
+        try {
+            const response = await axios.post("http://192.168.10.13:8000/api/add-startride/", 
+                updatedStartRideForm,
+            );
+
+            if (response.status === 200) {
+                console.log("Ride initialised successfully.");
+                navigation.navigate('HomeScreen');
+            } else {
+                console.error("Error starting ride:", response.message);
+            }
+        } catch (error) {
+            console.error("Network error: ", error);
+        }
     }
 
     return (
