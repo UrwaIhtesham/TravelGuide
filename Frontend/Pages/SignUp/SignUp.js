@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text, StyleSheet, Dimensions, SafeAreaView, ActivityIndicator, ScrollView, TouchableOpacity, TextInput, Pressable, Platform, Alert } from "react-native";
+import { View, Text, StyleSheet, Dimensions, SafeAreaView, ActivityIndicator, ScrollView, TouchableOpacity, TextInput, Pressable, Platform, Alert, ToastAndroid } from "react-native";
 import SignUpSVG from "../../SVG/SignUp";
 import * as Font from 'expo-font';
 import { useEffect, useState } from "react";
@@ -34,6 +34,12 @@ const SignUp = () => {
         date_of_birth: "",
         password: "",
     });
+
+    function notifyMessage(msg) {
+        if (Platform.OS === 'android') {
+            ToastAndroid.show(msg, ToastAndroid.SHORT);
+        }
+    }
 
     useEffect(() => {
         console.log("Updated Params from AddEmergencyContact:", route.params);
@@ -91,8 +97,16 @@ const SignUp = () => {
             if (response.data.message) {
                 console.log("Success Message:", response.data.message);
             }
-            Alert.alert("Success", response.data.message || "Account Created Successfully");
-            navigation.navigate('HomeScreen');
+
+            if (response.status === 201) {
+                const uid = response.data.uid;
+                const token = response.data.token;
+
+                navigation.navigate("VerifyEmail", {uid, token});
+                notifyMessage("Signup successful! Please check your email for verification.");
+            }
+            notifyMessage("SUCCESS!! Check your email to verify your account!");
+            navigation.navigate('Login');
         } catch (error) {
             if (error.response){
                 console.log("Error Response Data:", error.response.data);

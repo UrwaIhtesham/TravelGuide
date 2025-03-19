@@ -18,6 +18,8 @@ def login_user(request):
 
     try:
         user = User.objects.get(email=email)
+        if user.is_active == 0:
+            return JsonResponse({'error': 'Your account is not verified. Please check your email for verification.'}, status = 401)
         if check_password(password, user.password):
             return JsonResponse({'message': 'Login successful', 'user_id': user.user_id}, status=200)
         else:

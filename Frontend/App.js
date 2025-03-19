@@ -18,6 +18,7 @@ import CheckIn from './Pages/Features/checkin';
 import LowBattery from './Pages/Features/LowBattery';
 import VoiceCommand from './Pages/Features/VoiceCommand';
 import PanicMode from './Pages/Features/panicmode';
+import VerifyEmail from './Pages/utils/Verify';
 
 const Stack = createStackNavigator();
 
@@ -93,6 +94,11 @@ const App = () => {
         <Stack.Screen
         name='PanicMode'
         component={PanicMode}
+        options={{ headerShown: false }}
+        />
+        <Stack.Screen
+        name='VerifyEmail'
+        component={VerifyEmail}
         options={{ headerShown: false }}
         />
       </Stack.Navigator>
