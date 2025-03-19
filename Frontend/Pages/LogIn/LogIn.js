@@ -24,7 +24,7 @@ const Login = () => {
             </TouchableOpacity>
 
             <Text style={styles.footerText}>
-                Already have an account?{' '}
+                Don't have an account?{' '}
                 <TouchableOpacity onPress={() => navigation.navigate('Sign Up')}>
                     <Text style={styles.loginText}>Sign Up</Text>
                 </TouchableOpacity>

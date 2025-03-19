@@ -1,13 +1,45 @@
 import React, { useEffect,useState } from "react";
-import { View, Text, StyleSheet, ScrollView, ActivityIndicator, Dimensions, TextInput, TouchableOpacity } from "react-native";
+import { View, Text, StyleSheet, ScrollView, FlatList, ActivityIndicator, Dimensions, TextInput, TouchableOpacity } from "react-native";
 import * as Font from 'expo-font';
 import BackButton from "../../SVG/Backbutton";
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, useRoute } from "@react-navigation/native";
 
 const AddEmergencyContact = () => {
     const {width, height } = Dimensions.get('window');
     const [fontLoaded, setFontLoaded] = useState(false);
     const navigation = useNavigation();
+    const route = useRoute();
+
+    const { signUpData } = route.params;
+    const [ emergencyContacts, setEmergencyContacts ] = useState([]);
+
+    const [contact, setContact] = useState({
+        name: "",
+        phone: "",
+        email: "",
+        cnic: "",
+    });
+
+    useEffect(() => {
+            if (route.params?.signUpData) {
+                console.log(route.params?.signUpData);
+            }
+            //console.log(emergencyContacts);
+            //console.log(signUpData);
+        }, [route.params?.signUpData]);
+
+    const addContact = () => {
+        if (contact.name && contact.phone && contact.email) {
+            setEmergencyContacts([...emergencyContacts, contact]);
+            setContact({ name: "", phone: "", email: "", cnic: ""});
+        }
+        console.log(emergencyContacts);
+    };
+
+    useEffect(() => {
+        console.log("Updated emergencyContacts:", emergencyContacts);
+    }, [emergencyContacts]); // Runs whenever `emergencyContacts` changes
+    
 
     useEffect(() => {
         const loadFont = async () => {
@@ -24,31 +56,61 @@ const AddEmergencyContact = () => {
         return <ActivityIndicator size="large" color="#E3F2FD" />
     }
 
-    const handlePress = () => {
-        navigation.navigate('SignUp');
+    const handleSaveAndGoBac = () => {
+        console.log("Save & Go Back Clicked!")
+        setTimeout(() => {
+            navigation.navigate('SignUp', {
+                emergencyContacts: emergencyContacts,
+                signUpData, signUpData
+            });
+        }, 500);
     }
 
     return (
         <View style={styles.container}>
             <View style={styles.header}>
-                <TouchableOpacity onPress={handlePress}>
+                <TouchableOpacity onPress={handleSaveAndGoBac}>
                     <BackButton />
                 </TouchableOpacity>
                 <Text style={styles.headerText}>Emergency Contact</Text>
             </View>
             <View style={styles.inputContainer}>
-                <TextInput style={styles.input} placeholder="Enter Full Name" placeholderTextColor="#B0BEC5"/>
-                <TextInput style={styles.input} placeholder="Enter Email" placeholderTextColor="#B0BEC5"/>
-                <TextInput style={styles.input} placeholder="Enter Phone Number" placeholderTextColor="#B0BEC5"/>
-                <TextInput style={styles.input} placeholder="Enter CNIC" placeholderTextColor="#B0BEC5"/>
+                <TextInput 
+                    style={styles.input} 
+                    placeholder="Enter Full Name" 
+                    placeholderTextColor="#B0BEC5"
+                    value= {contact.name}
+                    onChangeText={(text) => setContact({ ...contact, name: text })}
+                />
+                <TextInput 
+                    style={styles.input} 
+                    placeholder="Enter Email" 
+                    placeholderTextColor="#B0BEC5"
+                    value = {contact.email}
+                    onChangeText={(text) => setContact({ ...contact, email: text })}
+                />
+                <TextInput 
+                    style={styles.input} 
+                    placeholder="Enter Phone Number" 
+                    placeholderTextColor="#B0BEC5"
+                    value = {contact.phone} 
+                    onChangeText={(text) => setContact({ ...contact, phone: text })}
+                />
+                <TextInput 
+                    style={styles.input} 
+                    placeholder="Enter CNIC" 
+                    placeholderTextColor="#B0BEC5"
+                    value = {contact.cnic}
+                    onChangeText={(text) => setContact({ ...contact, cnic: text })}
+                />
             
 
-                <TouchableOpacity style={styles.button} >
-                    <Text style={styles.buttonText}>Add more Contacts</Text>
+                <TouchableOpacity style={styles.button} onPress={addContact}>
+                    <Text style={styles.buttonText}>Add Contact</Text>
                 </TouchableOpacity>
 
-                <TouchableOpacity style={styles.signupbutton}>
-                    <Text style={styles.signupbuttonText}>Sign Up</Text>
+                <TouchableOpacity style={styles.signupbutton} onPress={handleSaveAndGoBac}>
+                    <Text style={styles.signupbuttonText}>Save & Go Back</Text>
                 </TouchableOpacity>
             </View>
         </View>
