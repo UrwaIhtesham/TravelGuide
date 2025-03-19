@@ -2,7 +2,7 @@ import React, { useRef, useState } from "react";
 import {View, Text, Image, TouchableOpacity, TextInput, Dimensions, StyleSheet, ScrollView, Modal} from 'react-native';
 import { useNavigation, useRoute } from "@react-navigation/native";
 import * as Font from 'expo-font';
-
+import axios from "axios";
 import BackButton from "../../SVG/Backbutton";
 import { Picker } from "@react-native-picker/picker";
 
@@ -54,11 +54,11 @@ const StartRide3 = () => {
         console.log(updatedStartRideForm);
 
         try {
-            const response = await axios.post("http://192.168.10.13:8000/api/add-startride/", 
+            const response = await axios.post("http://192.168.10.13:8000/api/add-start-ride/", 
                 updatedStartRideForm,
             );
 
-            if (response.status === 200) {
+            if (response.status === 201) {
                 console.log("Ride initialised successfully.");
                 navigation.navigate('HomeScreen');
             } else {

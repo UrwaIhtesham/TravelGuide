@@ -1,7 +1,7 @@
 from django.db import models
 from api.main_models import User
 
-class StartRide(moedls.Model):
+class StartRide(models.Model):
     ride_id = models.AutoField(primary_key=True)
     user_id = models.ForeignKey(User, on_delete=models.CASCADE, db_column="user_id")
     startingPoint = models.CharField(max_length=255)
