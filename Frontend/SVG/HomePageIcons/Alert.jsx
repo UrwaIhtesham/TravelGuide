@@ -2,7 +2,7 @@ import * as React from "react";
 import {View, StyleSheet} from 'react-native';
 import Svg, { G, Path, Defs, Pattern, Use, Image } from "react-native-svg"
 /* SVGR has dropped some elements not supported by react-native-svg: filter */
-const Alert = (props) => (
+const AlertIcon = (props) => (
   <Svg
     xmlns="http://www.w3.org/2000/svg"
     xmlnsXlink="http://www.w3.org/1999/xlink"
@@ -31,4 +31,4 @@ const Alert = (props) => (
   </Svg>
 );
 
-export default Alert;
+export default AlertIcon;

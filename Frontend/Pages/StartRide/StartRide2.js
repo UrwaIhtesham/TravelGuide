@@ -1,17 +1,24 @@
 import React, { useState } from "react";
 import {View, Text, Image, TouchableOpacity, TextInput, Dimensions, StyleSheet, ScrollView, Button} from 'react-native';
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, useRoute } from "@react-navigation/native";
 import * as Font from 'expo-font';
 
 import BackButton from "../../SVG/Backbutton";
 
 const StartRide2 = () => {
     const navigation = useNavigation();
+    const route = useRoute();
+
+    const { startRideForm } = route.params;
 
     const [selectedButton, setSelectedButton] = useState(null);
+    const [modeofTransport, setModeOfTransport] = useState(startRideForm.modeofTransport || "");
+    const [ nameofPassenger, setNameOfPassenger ] = useState(startRideForm.nameofPassenger || "");
+    const [ contactPassenger, setContactPassenger ] = useState(startRideForm.contactPassenger || "");
 
-    const handleButtonPress = (buttonId) => {
+    const handleButtonPress = (buttonId, value) => {
         setSelectedButton(selectedButton === buttonId ? null: buttonId);
+        setModeOfTransport(value);
     };
 
     return (
@@ -33,13 +40,13 @@ const StartRide2 = () => {
             <View style={styles.row}>
             <TouchableOpacity
                     style={[styles.buttonContainer, selectedButton === 'button1' && styles.selectedButton]}
-                    onPress={() => handleButtonPress('button1')}
+                    onPress={() => handleButtonPress('button1', 'Solo Travel')}
                 >
                     <Text style={styles.buttonText}>Solo Travel</Text>
                 </TouchableOpacity>
                 <TouchableOpacity
                     style={[styles.buttonContainer, selectedButton === 'button2' && styles.selectedButton]}
-                    onPress={() => handleButtonPress('button2')}
+                    onPress={() => handleButtonPress('button2', 'Public Transport')}
                 >
                     <Text style={styles.buttonText}>Public Transport</Text>
                 </TouchableOpacity>
@@ -47,23 +54,33 @@ const StartRide2 = () => {
             <View style={styles.row}>
             <TouchableOpacity
                     style={[styles.buttonContainer, selectedButton === 'button3' && styles.selectedButton]}
-                    onPress={() => handleButtonPress('button3')}
+                    onPress={() => handleButtonPress('button3', 'Carpooling')}
                 >
                     <Text style={styles.buttonText}>Carpooling</Text>
                 </TouchableOpacity>
                 <TouchableOpacity
                     style={[styles.buttonContainer, selectedButton === 'button4' && styles.selectedButton]}
-                    onPress={() => handleButtonPress('button4')}
+                    onPress={() => handleButtonPress('button4', 'Other')}
                 >
                     <Text style={styles.buttonText}>Other</Text>
                 </TouchableOpacity>
             </View>
 
             <Text style={styles.heading}>Passenger Information (optional)</Text>
-            <TextInput style={styles.input} placeholder="Enter Name of Passenger" placeholderTextColor="#B0BEC5"/>
-            <TextInput style={styles.input} placeholder="Enter contact number of passenger" placeholderTextColor="#B0BEC5" />
+            <TextInput style={styles.input} placeholder="Enter Name of Passenger" placeholderTextColor="#B0BEC5"
+                value={nameofPassenger} onChangeText={setNameOfPassenger} />
 
-            <TouchableOpacity style={styles.nextbutton} onPress={() => navigation.navigate('StartRide3')}>
+            <TextInput style={styles.input} placeholder="Enter contact number of passenger" placeholderTextColor="#B0BEC5" 
+                value={contactPassenger} onChangeText={setContactPassenger}/>
+
+            <TouchableOpacity style={styles.nextbutton} onPress={() => navigation.navigate('StartRide3', {
+                startRideForm: {
+                    ...startRideForm,
+                    modeofTransport: modeofTransport,
+                    nameofPassenger: nameofPassenger,
+                    contactPassenger: contactPassenger,
+                }
+            })}>
                 <Text style={styles.nextbuttonText}>Next</Text>
             </TouchableOpacity>
         </ScrollView>

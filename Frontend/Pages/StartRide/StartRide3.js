@@ -1,25 +1,53 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import {View, Text, Image, TouchableOpacity, TextInput, Dimensions, StyleSheet, ScrollView, Modal} from 'react-native';
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, useRoute } from "@react-navigation/native";
 import * as Font from 'expo-font';
-
+import * as Location from 'expo-location';
+import axios from "axios";
 import BackButton from "../../SVG/Backbutton";
 import { Picker } from "@react-native-picker/picker";
 
+
 const StartRide3 = () => {
     const navigation = useNavigation();
+    const route = useRoute();
+
+    const {startRideForm} = route.params;
+
+    const [ rideCode, setRideCode ] = useState(startRideForm.rideCode || "");
+    const [ timeInterval, setTimeInterval ] = useState(startRideForm.timeInterval || "");
+
+    const [ location, setLocation ] = useState(null);
+    
 
     const [modalVisible, setModalvisible] = useState(false);
     const [selectedTime, setSelectedTime] = useState("15");
     const [inputValue, setInputValue] = useState("");
 
     const inputRefs = [useRef(null), useRef(null), useRef(null), useRef(null)];
+    const rideCodeArray = rideCode.split("").concat(["", "", "", ""]).slice(0, 4);
+
+    useEffect(() => {
+        (async () => {
+            let { status } = await Location.requestForegroundPermissionsAsync();
+            if (status !== 'granted') {
+                console.log('Permission denied');
+                return;
+            }
+
+            let loc = await Location.getCurrentPositionAsync({});
+            setLocation(loc.coords);
+        })();
+    }, []);
 
     const handleTextChange = (text, index)=> {
-        if (text) {
-            if(index<inputRefs.length - 1) {
-                inputRefs[index + 1].current.focus();
-            }
+        let newRideCode = rideCodeArray;
+        newRideCode[index] = text;
+        console.log(newRideCode);
+        setRideCode(newRideCode.join(""));
+
+        if (text && index < inputRefs.length - 1) {
+            inputRefs[index + 1].current.focus();
         }
     };
 
@@ -28,9 +56,42 @@ const StartRide3 = () => {
     };
 
     const handleCloseModal = () => {
+        setTimeInterval(selectedTime);
         setInputValue(`${selectedTime} minutes`);
         setModalvisible(false);
     };
+
+    const handleStartRide = async () => {
+        if (!location) {
+            console.log("Location not available");
+            return;
+        }
+
+        const updatedStartRideForm = {
+            ...startRideForm,
+            rideCode: rideCode,
+            timeInterval: timeInterval,
+            latitude: location.latitude,
+            longitude: location.longitude
+        };
+
+        console.log(updatedStartRideForm);
+
+        try {
+            const response = await axios.post("http://192.168.10.13:8000/api/add-start-ride/", 
+                updatedStartRideForm,
+            );
+
+            if (response.status === 201) {
+                console.log("Ride initialised successfully.");
+                navigation.navigate('HomeScreen');
+            } else {
+                console.error("Error starting ride:", response.message);
+            }
+        } catch (error) {
+            console.error("Network error: ", error);
+        }
+    }
 
     return (
         <ScrollView contentContainerStyle={styles.container}>
@@ -58,6 +119,7 @@ const StartRide3 = () => {
                         keyboardType="numeric"
                         maxLength={1}
                         ref={ref} 
+                        value={rideCodeArray[index]}
                         onChangeText={(text) => handleTextChange(text, index)} // Handle text change
                     />
                 ))}
@@ -102,7 +164,7 @@ const StartRide3 = () => {
                 </View>
             </Modal>
 
-            <TouchableOpacity style={styles.nextbutton} onPress={() => navigation.navigate('HomeScreen')}>
+            <TouchableOpacity style={styles.nextbutton} onPress={handleStartRide}>
                 <Text style={styles.nextbuttonText}>Start Ride</Text>
             </TouchableOpacity>
         </ScrollView>

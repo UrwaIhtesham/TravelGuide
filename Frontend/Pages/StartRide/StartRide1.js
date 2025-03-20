@@ -1,12 +1,43 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {View, Text, Image, TouchableOpacity, TextInput, Dimensions, StyleSheet, ScrollView} from 'react-native';
 import { useNavigation } from "@react-navigation/native";
 import * as Font from 'expo-font';
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import BackButton from "../../SVG/Backbutton";
 
 const StartRide1 = () => {
     const navigation = useNavigation();
+
+    const [startRideForm, setStartRideForm] = useState({
+        user_id: "",
+        startingPoint: "",
+        destination: "",
+        vehicleType: "",
+        licenseplate: "",
+        vehicleinfo: "",
+        modeofTransport: "",
+        nameofPassenger: "",
+        contactPassenger: "",
+        rideCode: "",
+        timeInterval: ""
+    });
+
+    useEffect(() => {
+        const fetchUserId = async () => {
+            try {
+                const userId = await AsyncStorage.getItem("user_id");
+                if (userId) {
+                    setStartRideForm((prevForm) => ({ ...prevForm, user_id: userId }));
+                }
+            } catch (error) {
+                console.error("Error retrieving user_id:", error);
+            }
+        };
+
+
+        fetchUserId();
+    }, []);
 
     return (
         <ScrollView contentContainerStyle={styles.container}>
@@ -24,15 +55,23 @@ const StartRide1 = () => {
             </View>
 
             <Text style={styles.heading}>Journey</Text>
-            <TextInput style={styles.input} placeholder="Enter Your Starting Point" placeholderTextColor="#B0BEC5"/>
-            <TextInput style={styles.input} placeholder="Enter Your Destination" placeholderTextColor="#B0BEC5" />
+            <TextInput style={styles.input} placeholder="Enter Your Starting Point" placeholderTextColor="#B0BEC5"
+                value={startRideForm.startingPoint} onChangeText={(text) => setStartRideForm({...startRideForm, startingPoint: text })}/>
+            
+            <TextInput style={styles.input} placeholder="Enter Your Destination" placeholderTextColor="#B0BEC5" 
+                value={startRideForm.destination} onChangeText={(text) => setStartRideForm({...startRideForm, destination: text})}/>
 
             <Text style={styles.heading}>Vehicle Information (optional)</Text>
-            <TextInput style={styles.input} placeholder="Enter Vehicle Type" placeholderTextColor="#B0BEC5"/>
-            <TextInput style={styles.input} placeholder="Enter License plate #" placeholderTextColor="#B0BEC5" />
-            <TextInput style={styles.input} placeholder="Enter vehicle information" placeholderTextColor="#B0BEC5" />
+            <TextInput style={styles.input} placeholder="Enter Vehicle Type" placeholderTextColor="#B0BEC5"
+                value={startRideForm.vehicleType} onChangeText={(text) => setStartRideForm({...startRideForm, vehicleType: text})}/>
+            
+            <TextInput style={styles.input} placeholder="Enter License plate #" placeholderTextColor="#B0BEC5" 
+                value={startRideForm.licenseplate} onChangeText={(text) => setStartRideForm({...startRideForm, licenseplate: text})}/>
 
-            <TouchableOpacity style={styles.nextbutton} onPress={() => navigation.navigate('StartRide2')}>
+            <TextInput style={styles.input} placeholder="Enter vehicle information" placeholderTextColor="#B0BEC5" 
+                value={startRideForm.vehicleinfo} onChangeText={(text) => setStartRideForm({...startRideForm, vehicleinfo: text})}/>
+
+            <TouchableOpacity style={styles.nextbutton} onPress={() => navigation.navigate('StartRide2', { startRideForm })}>
                 <Text style={styles.nextbuttonText}>Next</Text>
             </TouchableOpacity>
         </ScrollView>
