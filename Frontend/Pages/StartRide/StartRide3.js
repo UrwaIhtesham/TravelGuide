@@ -1,10 +1,12 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import {View, Text, Image, TouchableOpacity, TextInput, Dimensions, StyleSheet, ScrollView, Modal} from 'react-native';
 import { useNavigation, useRoute } from "@react-navigation/native";
 import * as Font from 'expo-font';
+import * as Location from 'expo-location';
 import axios from "axios";
 import BackButton from "../../SVG/Backbutton";
 import { Picker } from "@react-native-picker/picker";
+
 
 const StartRide3 = () => {
     const navigation = useNavigation();
@@ -14,6 +16,8 @@ const StartRide3 = () => {
 
     const [ rideCode, setRideCode ] = useState(startRideForm.rideCode || "");
     const [ timeInterval, setTimeInterval ] = useState(startRideForm.timeInterval || "");
+
+    const [ location, setLocation ] = useState(null);
     
 
     const [modalVisible, setModalvisible] = useState(false);
@@ -22,6 +26,19 @@ const StartRide3 = () => {
 
     const inputRefs = [useRef(null), useRef(null), useRef(null), useRef(null)];
     const rideCodeArray = rideCode.split("").concat(["", "", "", ""]).slice(0, 4);
+
+    useEffect(() => {
+        (async () => {
+            let { status } = await Location.requestForegroundPermissionsAsync();
+            if (status !== 'granted') {
+                console.log('Permission denied');
+                return;
+            }
+
+            let loc = await Location.getCurrentPositionAsync({});
+            setLocation(loc.coords);
+        })();
+    }, []);
 
     const handleTextChange = (text, index)=> {
         let newRideCode = rideCodeArray;
@@ -45,10 +62,17 @@ const StartRide3 = () => {
     };
 
     const handleStartRide = async () => {
+        if (!location) {
+            console.log("Location not available");
+            return;
+        }
+
         const updatedStartRideForm = {
             ...startRideForm,
             rideCode: rideCode,
             timeInterval: timeInterval,
+            latitude: location.latitude,
+            longitude: location.longitude
         };
 
         console.log(updatedStartRideForm);
