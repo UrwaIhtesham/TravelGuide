@@ -20,10 +20,18 @@ import VoiceCommand from './Pages/Features/VoiceCommand';
 import PanicMode from './Pages/Features/panicmode';
 import VerifyEmail from './Pages/utils/Verify';
 import checkSession from './Pages/utils/CheckSession';
+import LowBatteryScreen from './Pages/LowBatteryScreen/LowBatteryMonito';
+import useBatteryMonitor from './Pages/utils/useBatteryMonitor';
+import { registerBackgroundTask } from './Pages/utils/useBatteryMonitor';
 
 const Stack = createStackNavigator();
 
 const App = () => {
+
+  useBatteryMonitor();
+  // useEffect(() => {
+  //   registerBackgroundTask();
+  // }, []);
 
   const navigationRef = useRef();
 
