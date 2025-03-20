@@ -4,18 +4,52 @@ import { ScrollView, View, StyleSheet, TouchableOpacity, Text, TextInput, Button
 import BackButton from "../../SVG/Backbutton";
 import checkin from "../../SVG/FeaturesScreenIcons/CheckIn";
 import CheckinSVG from "../../SVG/FeaturesScreenIcons/CheckIn";
+import axios from "axios";
 
 const CheckIn = () => {
     const navigation = useNavigation();
-    const [inputValue, setInputValue] = useState("");
+    const [rideCode, setRideCode ] = useState("1234");
+    const [inputValues, setInputValues] = useState(["", "", "", ""]);
+
     
     const inputRefs = [useRef(null), useRef(null), useRef(null), useRef(null)];
     
     const handleTextChange = (text, index)=> {
-        if (text) {
-            if(index<inputRefs.length - 1) {
-                inputRefs[index + 1].current.focus();
-            }
+        let newRideCode = rideCodeArray;
+        newRideCode[index] = text;
+        console.log(newRideCode);
+        setRideCode(newRideCode.join(""));
+
+        if (text && index < inputRefs.length - 1) {
+            inputRefs[index + 1].current.focus();
+        }
+    };
+
+    const handleBackspace = (index) => {
+        if (index > 0) {
+            inputRefs[index - 1].current.focus();
+        }
+    };
+
+    const verifyCode = async () => {
+        const enteredCode = inputValues.join("");
+        
+        if (enteredCode === rideCode) {
+            navigation.navigate("HomeScreen");
+        } else {
+            Alert.alert("Incorrect Code!", "An emergency alert has been sent.");
+            sendEmergencyAlert();
+        }
+    };
+
+    const sendEmergencyAlert = async () => {
+        try {
+            await axios.post("https://192.168.10.13:8000/api/send-checkin-alert", {
+                message: "Emergency Alert! User failed to verify their ride.",
+                userId: userid
+            });
+        } catch (error) {
+            console.error("Error sending alert:", error);
         }
     };
 
@@ -23,9 +57,6 @@ const CheckIn = () => {
         <View style={styles.container}>
             <ScrollView style={styles.scrollcontainer}>
             <View style={styles.header}>
-                <TouchableOpacity onPress={() => navigation.navigate('HomeScreen')}>
-                    <BackButton />
-                </TouchableOpacity>
                 <Text style={styles.headerText}>Safety Check In</Text>
             </View>
 
@@ -43,12 +74,18 @@ const CheckIn = () => {
                                     keyboardType="numeric"
                                     maxLength={1}
                                     ref={ref} 
-                                    onChangeText={(text) => handleTextChange(text, index)} // Handle text change
+                                    value={inputValues[index]}
+                                    onChangeText={(text) => handleTextChange(text, index)}
+                                    onKeyPress={({ nativeEvent }) => {
+                                        if (nativeEvent.key === "Backspace" && !inputValues[index]) {
+                                            handleBackspace(index);
+                                        }
+                                    }}
                                 />
                             ))}                
             </View>
 
-            <TouchableOpacity style={styles.submitbutton} onPress={() => navigation.navigate('HomeScreen')}>
+            <TouchableOpacity style={styles.submitbutton} onPress={verifyCode}>
                 <Text style={styles.submitbuttonText}>Submit</Text>
             </TouchableOpacity>
             </ScrollView>
