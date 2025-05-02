@@ -14,7 +14,7 @@ const checkBattery = async () => {
     const batteryLevel = await Battery.getBatteryLevelAsync();
     console.log("Battery Level: ", batteryLevel * 100);
   
-    if (batteryLevel * 100 <= 10) {
+    if (batteryLevel * 100 <= 30) {
       console.log("Battery below 10%! Sending emergency alert...");
   
       const storedUserId = await AsyncStorage.getItem("user_id");

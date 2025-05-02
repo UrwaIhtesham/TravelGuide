@@ -120,7 +120,7 @@ const StartRide3 = () => {
                         maxLength={1}
                         ref={ref} 
                         value={rideCodeArray[index]}
-                        onChangeText={(text) => handleTextChange(text, index)} // Handle text change
+                        onChangeText={(text) => handleTextChange(text, index)} 
                     />
                 ))}
                 

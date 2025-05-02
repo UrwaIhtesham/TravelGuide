@@ -1,6 +1,6 @@
 import React, {useEffect, useState, useRef} from "react";
 import { useNavigation } from "@react-navigation/native";
-import { ScrollView, View, StyleSheet, TouchableOpacity, Text, TextInput, Button } from "react-native";
+import { ScrollView, View, StyleSheet, TouchableOpacity, Text, TextInput, Button, Alert } from "react-native";
 import BackButton from "../../SVG/Backbutton";
 import checkin from "../../SVG/FeaturesScreenIcons/CheckIn";
 import CheckinSVG from "../../SVG/FeaturesScreenIcons/CheckIn";
@@ -14,22 +14,22 @@ const CheckIn = () => {
     
     const inputRefs = [useRef(null), useRef(null), useRef(null), useRef(null)];
     
-    const handleTextChange = (text, index)=> {
-        let newRideCode = rideCodeArray;
-        newRideCode[index] = text;
-        console.log(newRideCode);
-        setRideCode(newRideCode.join(""));
+    // const handleTextChange = (text, index)=> {
+    //     let newRideCode = rideCodeArray;
+    //     newRideCode[index] = text;
+    //     console.log(newRideCode);
+    //     setRideCode(newRideCode.join(""));
 
-        if (text && index < inputRefs.length - 1) {
-            inputRefs[index + 1].current.focus();
-        }
-    };
+    //     if (text && index < inputRefs.length - 1) {
+    //         inputRefs[index + 1].current.focus();
+    //     }
+    // };
 
-    const handleBackspace = (index) => {
-        if (index > 0) {
-            inputRefs[index - 1].current.focus();
-        }
-    };
+    // const handleBackspace = (index) => {
+    //     if (index > 0) {
+    //         inputRefs[index - 1].current.focus();
+    //     }
+    // };
 
     const verifyCode = async () => {
         const enteredCode = inputValues.join("");
@@ -43,6 +43,7 @@ const CheckIn = () => {
     };
 
     const sendEmergencyAlert = async () => {
+        const userId = await AsyncStorage.getItem('user_id');
         try {
             await axios.post("https://192.168.10.13:8000/api/send-checkin-alert", {
                 message: "Emergency Alert! User failed to verify their ride.",
@@ -75,12 +76,12 @@ const CheckIn = () => {
                                     maxLength={1}
                                     ref={ref} 
                                     value={inputValues[index]}
-                                    onChangeText={(text) => handleTextChange(text, index)}
-                                    onKeyPress={({ nativeEvent }) => {
-                                        if (nativeEvent.key === "Backspace" && !inputValues[index]) {
-                                            handleBackspace(index);
-                                        }
-                                    }}
+                                    // onChangeText={(text) => handleTextChange(text, index)}
+                                    // onKeyPress={({ nativeEvent }) => {
+                                    //     if (nativeEvent.key === "Backspace" && !inputValues[index]) {
+                                    //         handleBackspace(index);
+                                    //     }
+                                    // }}
                                 />
                             ))}                
             </View>
