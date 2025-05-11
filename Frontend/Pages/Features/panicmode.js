@@ -1,9 +1,10 @@
 import React, {useState, useEffect} from "react";
 import { useNavigation } from "@react-navigation/native";
 import BackButton from "../../SVG/Backbutton";
-import { ScrollView, StyleSheet, View, TouchableOpacity, Text, Image } from "react-native";
+import { ScrollView, StyleSheet, View, TouchableOpacity, Text, Image, Platform, ToastAndroid } from "react-native";
 import VoiceCommandSVG from "../../SVG/FeaturesScreenIcons/voiceCommand";
 import PanicSVG from "../../SVG/FeaturesScreenIcons/panic";
+import * as Location from "expo-location";
 
 const PanicMode = () => {
     const navigation = useNavigation();
@@ -26,13 +27,13 @@ const PanicMode = () => {
 
                 <Text style={styles.textt}>Panic Mode activated. Notifying emergency contacts. (Location, Audio, Video files sent)</Text>
 
-                <TouchableOpacity style={styles.cancelbutton} onPress={() => navigation.navigate('HomeScreen')}>
+                {/* <TouchableOpacity style={styles.cancelbutton} onPress={() => navigation.navigate('HomeScreen')}>
                     <Text style={styles.cancelbuttonText}>Cancel</Text>
                 </TouchableOpacity>
                 
                 <TouchableOpacity style={styles.endRidebutton} onPress={() => navigation.navigate('HomeScreen')}>
                     <Text style={styles.endRidebuttonText}>Notify Emergency Contacts</Text>
-                </TouchableOpacity>
+                </TouchableOpacity> */}
 
                 <Text style={styles.panicmodeText}>Panic Mode Activated</Text>
             </ScrollView>

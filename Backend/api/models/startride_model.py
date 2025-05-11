@@ -15,6 +15,7 @@ class StartRide(models.Model):
     rideCode = models.CharField(max_length=4)
     timeInterval = models.CharField(max_length=50)
     created_at = models.DateTimeField(auto_now_add=True)
+    status = models.CharField(max_length=20, choices=[("ongoing", "Ongoing"), ("completed", "Completed")], default="ongoing")
 
     def __str__(self):
         return f"Ride {self.ride_id}"

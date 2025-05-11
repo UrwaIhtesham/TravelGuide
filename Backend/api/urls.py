@@ -4,6 +4,8 @@ from .main_views import get_users, verify_email
 from .views.emergency_contacts import add_emergency_contact, get_emergency_contacts, get_emergency_count
 from api.views.login_views import login_user, check_session, logout_user
 from api.views.startride_view import add_start_ride, get_startride
+from api.views.send_alerts_view import send_low_battery_alert, send_checkin_alert, send_panicmode_alert
+
 urlpatterns = [
     path('signup/', signup, name='signup'),
     path('users/', get_users, name='get_users'),
@@ -16,4 +18,7 @@ urlpatterns = [
     path("emergency-count/", get_emergency_count, name="get_emergency_count"),
     path("add-start-ride/", add_start_ride, name="add_start_ride"),
     path("get-rides/", get_startride, name="get_startride"),
+    path('send-battery-alert/', send_low_battery_alert, name="send_low_battery_alert"),
+    path('send-checin-alert/', send_checkin_alert, name="send_checin_alert"),
+    path('send-panicmode-alert/', send_panicmode_alert, name='send_panicmode_alert')
 ]

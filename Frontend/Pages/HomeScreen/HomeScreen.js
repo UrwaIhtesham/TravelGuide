@@ -19,11 +19,39 @@ import { useNavigation } from '@react-navigation/native';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Alert } from 'react-native';
+import useBatteryMonitor from '../utils/useBatteryMonitor';
+import * as Location from 'expo-location';
 
 const HomeScreen = () => {
+    //useBatteryMonitor();
+
     const {width, height} = Dimensions.get('window');
     const [fontLoaded, setFontLoaded] = useState(false);
     const navigation=useNavigation();
+
+    const [location, setLocation] = useState(null);
+
+
+    function notifyMessage(msg) {
+        if (Platform.OS === 'android') {
+            ToastAndroid.show(msg, ToastAndroid.SHORT);
+        }
+    }
+
+    // useEffect(() => {
+    //     const loadFont = async () => {
+    //         await Font.loadAsync({
+    //             'Poppins': require('../../assets/Fonts/Poppins-Bold.ttf'),
+    //         });
+    //         setFontLoaded(true);
+    //     };
+
+    //     loadFont();
+    // }, []);
+
+    // if (!fontLoaded){
+    //     return <ActivityIndicator size="small" color="#E3F2FD" />
+    // }
 
     function notifyMessage(msg) {
         if (Platform.OS === 'android') {
@@ -32,18 +60,41 @@ const HomeScreen = () => {
     }
 
     useEffect(() => {
-        const loadFont = async () => {
-            await Font.loadAsync({
-                'Poppins': require('../../assets/Fonts/Poppins-Bold.ttf'),
-            });
-            setFontLoaded(true);
-        };
+        (async () => {
+            let { status } = await Location.requestForegroundPermissionsAsync();
+            if (status !== 'granted') {
+                console.log('Permission denied');
+                return;
+            }
 
-        loadFont();
+            let loc = await Location.getCurrentPositionAsync({});
+            setLocation(loc.coords);
+        })();
     }, []);
 
-    if (!fontLoaded){
-        return <ActivityIndicator size="small" color="#E3F2FD" />
+    const handlePanicMode = async () => {
+        if (!location) {
+            notifyMessage('Location not available.');
+            return;
+        }
+        try {
+            const user_id = await AsyncStorage.getItem("user_id");
+            console.log(user_id);
+            const response = await axios.post("http://192.168.10.13:8000/api/send-panicmode-alert/", {
+                user_id: user_id,
+                latitude: location.latitude,
+                longitude: location.longitude
+            });
+            console.log(response);
+            console.log(user_id);
+
+            console.log(response.data.status);
+
+            navigation.navigate('PanicMode');
+        } catch (error) {
+            console.error("Some Error found: ", error);
+            notifyMessage(`Some error happened.`);
+        }
     }
 
     const checkEmergencyContacts = async () => {
@@ -114,7 +165,7 @@ const HomeScreen = () => {
                     <View style={styles.featuresRow}>
                     <View style={styles.featureBoxContainer}>
                     <View style={styles.shadowover}/>
-                        <TouchableOpacity onPress={() => navigation.navigate('PanicMode')}>
+                        <TouchableOpacity onPress={handlePanicMode}>
                         <View style={styles.featureBox}>
                             <View style={styles.shadow}>
                             <AlertIcon/>
