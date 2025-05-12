@@ -45,7 +45,7 @@ const CheckIn = () => {
     const sendEmergencyAlert = async () => {
         const userId = await AsyncStorage.getItem('user_id');
         try {
-            await axios.post("https://192.168.10.13:8000/api/send-checkin-alert", {
+            await axios.post("https://192.168.10.8:8000/api/send-checkin-alert", {
                 message: "Emergency Alert! User failed to verify their ride.",
                 userId: userid
             });

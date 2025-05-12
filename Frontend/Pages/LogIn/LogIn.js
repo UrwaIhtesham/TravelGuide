@@ -17,9 +17,43 @@ const Login = () => {
         }
     }
 
+    const validateInputs = () => {
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!email.trim() || !emailRegex.test(email)) {
+        notifyMessage("Enter a valid email address.");
+        return false;
+    }
+
+    const p = password.trim();
+
+    if (p.length < 6) {
+        notifyMessage("Password must be at least 6 characters long.");
+        return false;
+    }
+
+    if (!/[A-Za-z]/.test(p)) {
+        notifyMessage("Password must contain at least one letter.");
+        return false;
+    }
+
+    if (!/\d/.test(p)) {
+        notifyMessage("Password must contain at least one digit.");
+        return false;
+    }
+
+    if (!/[!@#$%^&*()_+=\-{}[\]:<>?,./]/.test(p)) {
+        notifyMessage("Password must contain at least one symbol.");
+        return false;
+    }
+
+    return true;
+    };
+
     const handleLogin = async () => {
+        if (!validateInputs()) return;
         try {
-            const response = await axios.post("http://192.168.10.13:8000/api/login/", 
+            const response = await axios.post("http://192.168.10.8:8000/api/login/", 
                 { email, password },
                 { withCredentials: true }
             );

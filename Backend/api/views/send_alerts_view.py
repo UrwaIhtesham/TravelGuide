@@ -83,6 +83,7 @@ def send_checkin_alert(request):
 
 @api_view(['POST'])
 def send_panicmode_alert(request):
+    print("Panic mode alert API hit!")
     user_id = request.data.get("user_id")
     latitude = request.data.get("latitude")
     longitude = request.data.get("longitude")

@@ -31,6 +31,47 @@ const HomeScreen = () => {
 
     const [location, setLocation] = useState(null);
 
+    const [user, setUser] = useState({ name: '', email: ''})
+    const currentDate = new Date().toLocaleDateString('en-US', {
+        weekday: 'short',
+        month: 'short',
+        day: 'numeric',
+        year: 'numeric'
+    });
+
+    useEffect(() => {
+        // Fetch user data after the component mounts
+        const fetchUserData = async () => {
+            try {
+                const user_id = await AsyncStorage.getItem("user_id");
+                if (user_id) {
+                    const response = await axios.post(`http://192.168.10.8:8000/api/get-user-data/`,
+                        { user_id }
+                    );
+                    console.log('response: ', response);
+                    const fullName = response.data.user.name;
+                    const firstName = fullName.split(" ")[0];  
+                    const email = response.data.user.email;
+                    setUser({ name: firstName, email: email });
+                }
+            } catch (error) {
+                console.error("Error fetching user data: ", error);
+            }
+        };
+
+        fetchUserData();
+
+        (async () => {
+            let { status } = await Location.requestForegroundPermissionsAsync();
+            if (status !== 'granted') {
+                console.log('Permission denied');
+                return;
+            }
+
+            let loc = await Location.getCurrentPositionAsync({});
+            setLocation(loc.coords);
+        })();
+    }, []);
 
     function notifyMessage(msg) {
         if (Platform.OS === 'android') {
@@ -59,18 +100,18 @@ const HomeScreen = () => {
         }
     }
 
-    useEffect(() => {
-        (async () => {
-            let { status } = await Location.requestForegroundPermissionsAsync();
-            if (status !== 'granted') {
-                console.log('Permission denied');
-                return;
-            }
+    // useEffect(() => {
+    //     (async () => {
+    //         let { status } = await Location.requestForegroundPermissionsAsync();
+    //         if (status !== 'granted') {
+    //             console.log('Permission denied');
+    //             return;
+    //         }
 
-            let loc = await Location.getCurrentPositionAsync({});
-            setLocation(loc.coords);
-        })();
-    }, []);
+    //         let loc = await Location.getCurrentPositionAsync({});
+    //         setLocation(loc.coords);
+    //     })();
+    // }, []);
 
     const handlePanicMode = async () => {
         if (!location) {
@@ -80,7 +121,7 @@ const HomeScreen = () => {
         try {
             const user_id = await AsyncStorage.getItem("user_id");
             console.log(user_id);
-            const response = await axios.post("http://192.168.10.13:8000/api/send-panicmode-alert/", {
+            const response = await axios.post("http://192.168.10.8:8000/api/send-panicmode-alert/", {
                 user_id: user_id,
                 latitude: location.latitude,
                 longitude: location.longitude
@@ -101,7 +142,7 @@ const HomeScreen = () => {
         try {
             const user_id = await AsyncStorage.getItem("user_id");
             console.log(user_id);
-            const response = await axios.get("http://192.168.10.13:8000/api/emergency-count/", {
+            const response = await axios.get("http://192.168.10.8:8000/api/emergency-count/", {
                 params: { user_id }
             });
             console.log(response);
@@ -125,9 +166,9 @@ const HomeScreen = () => {
             <ScrollView style={styles.scrollContainer}>
                 <View style={styles.header}>
                         <View style={styles.textContainer}>
-                        <Text style={styles.greeting}>Hi, John Doe!</Text>
-                        <Text style={styles.email}>johndoe@gmail.com</Text>
-                        <Text style={styles.date}>Fri, Oct 18, 2024</Text>
+                        <Text style={styles.greeting}>Hi, {user.name}!</Text>
+                        <Text style={styles.email}>{user.email}</Text>
+                        <Text style={styles.date}>{currentDate}</Text>
                     </View>
                     <View style={styles.iconContainer}>
                         <TouchableOpacity style={styles.editProfileIcon} onPress={() => navigation.navigate('UserProfile') }>

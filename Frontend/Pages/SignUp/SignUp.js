@@ -89,9 +89,72 @@ const SignUp = () => {
         setForm({ ...form, [name]: value});
     };
 
+    const validateInputs = () => {
+    const { full_name, email, phone_number, CNIC, gender, date_of_birth, password } = form;
+
+    if (!full_name.trim()) {
+        notifyMessage("Full name is required.");
+        return false;
+    }
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!email.trim() || !emailRegex.test(email)) {
+        notifyMessage("Enter a valid email address.");
+        return false;
+    }
+
+    const phoneRegex = /^\+92\d{10}$/;
+    if (!phone_number.trim() || !phoneRegex.test(phone_number)) {
+        notifyMessage("Enter a valid phone number.");
+        return false;
+    }
+
+    const cnicRegex = /^[0-9]{5}-[0-9]{7}-[0-9]{1}$/;
+    if (!CNIC.trim() || !cnicRegex.test(CNIC)) {
+        notifyMessage("Enter a valid CNIC (e.g., 12345-1234567-1).");
+        return false;
+    }
+
+    if (!gender) {
+        notifyMessage("Please select a gender.");
+        return false;
+    }
+
+    if (!date_of_birth) {
+        notifyMessage("Please select your date of birth.");
+        return false;
+    }
+
+    const p = password.trim();
+
+    if (p.length < 6) {
+        notifyMessage("Password must be at least 6 characters long.");
+        return false;
+    }
+
+    if (!/[A-Za-z]/.test(p)) {
+        notifyMessage("Password must contain at least one letter.");
+        return false;
+    }
+
+    if (!/\d/.test(p)) {
+        notifyMessage("Password must contain at least one digit.");
+        return false;
+    }
+
+    if (!/[!@#$%^&*()_+=\-{}[\]:<>?,./]/.test(p)) {
+        notifyMessage("Password must contain at least one symbol.");
+        return false;
+    }
+
+    return true;
+    };
+
+
     const handleSignUp = async() => {
+        if (!validateInputs()) return;
         try {
-            const response = await axios.post("http://192.168.10.13:8000/api/signup/", form);
+            const response = await axios.post("http://192.168.10.8:8000/api/signup/", form);
             console.log("User Registered:", response.data);
 
             if (response.data.user) {

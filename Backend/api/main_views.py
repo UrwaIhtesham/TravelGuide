@@ -27,7 +27,7 @@ def signup(request):
                 uid = urlsafe_base64_encode(force_bytes(user.pk))
                 token = default_token_generator.make_token(user)
                 
-                verification_link = f"http://192.168.10.13:8000/api/verify/{uid}/{token}/"
+                verification_link = f"http://192.168.10.8:8000/api/verify/{uid}/{token}/"
 
                 send_mail(
                     subject="Verify Your EMail",
@@ -64,4 +64,21 @@ def verify_email(request, uidb64, token):
 def get_users(request):
     users = User.objects.all()
     serializer = UserSerializer(users, many=True)
-    return JsonResponse({"users": serializer.data}, safe=False, json_dumps_params={'indent': 2})      
+    return JsonResponse({"users": serializer.data}, safe=False, json_dumps_params={'indent': 2})   
+
+@api_view(['POST'])
+def get_user_by_id(request):
+    data = json.loads(request.body)
+    user_id = data.get('user_id')
+    print('user_id:', user_id)
+    if not user_id:
+        return JsonResponse({'error': 'user_id is required'}, status=400)
+    
+    try:
+        user = User.objects.get(user_id=user_id)
+        return JsonResponse({'message': 'User found', 'user': {
+            'name': user.full_name,
+            'email': user.email,
+        }}, status=200)
+    except User.DoesNotExist:
+        return JsonResponse({'error': 'User not found'}, status=404)
